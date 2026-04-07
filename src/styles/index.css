@@ -1,0 +1,18 @@
+@import "tailwindcss"; /* Esto carga Tailwind v4 */
+
+/* Esto le dice a Tailwind dónde buscar tus archivos para aplicar estilos */
+@source "../**/*.{js,ts,jsx,tsx}"; 
+
+/* Importa tus colores de Figma */
+@import "./theme.css"; 
+
+/* Estilos base para que nada se vea "roto" */
+:root, body, #root {
+  height: 100vh;
+  width: 100vw;
+  margin: 0;
+  padding: 0;
+  background-color: black;
+  color: white;
+  overflow: hidden;
+}

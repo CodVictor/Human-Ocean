@@ -1,0 +1,6 @@
+@import "tailwindcss";
+
+/* El @source debe ir sin comillas simples si da guerra */
+@source "../**/*.{js,ts,jsx,tsx}";
+
+@import "tw-animate-css";
