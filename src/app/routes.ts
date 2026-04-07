@@ -10,6 +10,8 @@ import { Configuracion } from './pages/Configuracion';
 import { DonatePage } from './pages/DonatePage';
 import { ThankYouPage } from './pages/ThankYouPage';
 import { NotFound } from './pages/NotFound';
+import { LoginPage } from './pages/LoginPage';
+import { SignupPage } from './pages/SignUpPage';
 
 export const router = createBrowserRouter([
   {
@@ -28,6 +30,8 @@ export const router = createBrowserRouter([
       { path: 'donar', Component: DonatePage },
       { path: 'thank-you', Component: ThankYouPage },
       { path: 'gracias', Component: ThankYouPage },
+      { path: 'login', Component: LoginPage },
+      { path: 'signup', Component: SignupPage },
       { path: '*', Component: NotFound },
     ],
   },

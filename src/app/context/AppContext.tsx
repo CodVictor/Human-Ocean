@@ -1,77 +1,141 @@
-import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+
+type Language = 'es' | 'en';
+type Theme = 'light' | 'dark';
+
+interface UserProfile {
+  name: string;
+  avatar: string;
+  totalDonated: number;
+  streak: number;
+}
 
 interface AppContextType {
-  theme: 'light' | 'dark';
+  isAuthenticated: boolean;
+  user: UserProfile;
+  login: () => void;
+  logout: () => void;
+  language: Language;
+  setLanguage: (language: Language) => void;
+  toggleLanguage: () => void;
+  theme: Theme;
   toggleTheme: () => void;
   fontSize: number;
   increaseFontSize: () => void;
   decreaseFontSize: () => void;
-  idioma: 'es' | 'en';
-  toggleIdioma: () => void;
-  language: 'es' | 'en';
-  setLanguage: (lang: 'es' | 'en') => void;
-  user: {
-    name: string;
-    avatar: string;
-    totalDonated: number;
-    streak: number;
-  };
-  updateProfilePicture: (url: string) => void;
+  updateProfilePicture: (avatarUrl: string) => void;
+  t: (key: string) => string;
 }
+
+const translations = {
+  es: {
+    'nav.login': 'Iniciar Sesión',
+    'nav.signup': 'Registrarse',
+    'nav.profile': 'Perfil',
+    'nav.settings': 'Configuración',
+    'nav.logout': 'Cerrar Sesión',
+    'home.title': 'Human & Ocean',
+    'home.subtitle': 'Cuidando nuestro planeta, una ola a la vez.',
+    'login.title': 'Bienvenido de nuevo',
+    'login.subtitle': 'Ingresa a tu cuenta para continuar.',
+    'login.email': 'Correo electrónico',
+    'login.password': 'Contraseña',
+    'login.submit': 'Iniciar sesión',
+    'login.no_account': '¿No tienes cuenta?',
+    'signup.title': 'Únete a nosotros',
+    'signup.subtitle': 'Crea tu cuenta y empieza a hacer la diferencia.',
+    'signup.firstname': 'Nombre',
+    'signup.lastname': 'Apellido',
+    'signup.email': 'Correo electrónico',
+    'signup.password': 'Contraseña',
+    'signup.submit': 'Registrarse',
+    'signup.has_account': '¿Ya tienes cuenta?',
+    'signup.mission': 'Nuestra Misión',
+    'signup.mission_text': 'Conectamos a personas comprometidas con la preservación de nuestros océanos y ecosistemas. Juntos podemos crear un impacto ambiental positivo y duradero para las futuras generaciones.',
+  },
+  en: {
+    'nav.login': 'Log In',
+    'nav.signup': 'Sign Up',
+    'nav.profile': 'Profile',
+    'nav.settings': 'Settings',
+    'nav.logout': 'Log Out',
+    'home.title': 'Human & Ocean',
+    'home.subtitle': 'Caring for our planet, one wave at a time.',
+    'login.title': 'Welcome back',
+    'login.subtitle': 'Sign in to your account to continue.',
+    'login.email': 'Email',
+    'login.password': 'Password',
+    'login.submit': 'Log In',
+    'login.no_account': "Don't have an account?",
+    'signup.title': 'Join us',
+    'signup.subtitle': 'Create your account and start making a difference.',
+    'signup.firstname': 'First Name',
+    'signup.lastname': 'Last Name',
+    'signup.email': 'Email',
+    'signup.password': 'Password',
+    'signup.submit': 'Sign Up',
+    'signup.has_account': 'Already have an account?',
+    'signup.mission': 'Our Mission',
+    'signup.mission_text': 'We connect people committed to preserving our oceans and ecosystems. Together we can create a positive and lasting environmental impact for future generations.',
+  }
+};
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export function AppProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<'light' | 'dark'>('dark');
-  const [fontSize, setFontSize] = useState(16);
-  const [language, setLanguage] = useState<'es' | 'en'>('es');
-  const [userAvatar, setUserAvatar] = useState('https://marketplace.canva.com/EAGl2WpDo0Q/1/0/1600w/canva-foto-de-perfil-de-instagram-mujer-moderno-tQ8K1dL4nno.jpg');
-  
-  const idioma = language;
-  const toggleIdioma = () => setLanguage(prev => prev === 'es' ? 'en' : 'es');
-
-  const user = {
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [user, setUser] = useState<UserProfile>({
     name: 'Laura Lopez',
-    avatar: userAvatar,
-    totalDonated: 4533,
-    streak: 39
-  };
-
-  const updateProfilePicture = (url: string) => {
-    setUserAvatar(url);
-  };
+    avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=240&h=240&fit=crop&crop=faces',
+    totalDonated: 453,
+    streak: 47,
+  });
+  const [language, setLanguage] = useState<Language>('es');
+  const [theme, setTheme] = useState<Theme>('light');
+  const [fontSize, setFontSize] = useState(16);
 
   useEffect(() => {
-    document.documentElement.classList.toggle('dark', theme === 'dark');
-    document.documentElement.style.setProperty('--font-size', `${fontSize}px`);
-  }, [theme, fontSize]);
+    // Basic theme effect
+    if (theme === 'dark') {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, [theme]);
 
-  const toggleTheme = () => {
-    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  useEffect(() => {
+    document.documentElement.style.fontSize = `${fontSize}px`;
+  }, [fontSize]);
+
+  const login = () => setIsAuthenticated(true);
+  const logout = () => setIsAuthenticated(false);
+  const toggleLanguage = () => setLanguage(prev => prev === 'es' ? 'en' : 'es');
+  const toggleTheme = () => setTheme(prev => prev === 'light' ? 'dark' : 'light');
+  const increaseFontSize = () => setFontSize(prev => Math.min(prev + 1, 22));
+  const decreaseFontSize = () => setFontSize(prev => Math.max(prev - 1, 12));
+  const updateProfilePicture = (avatarUrl: string) => {
+    setUser(prev => ({ ...prev, avatar: avatarUrl }));
   };
 
-  const increaseFontSize = () => {
-    setFontSize(prev => Math.min(prev + 2, 24));
-  };
-
-  const decreaseFontSize = () => {
-    setFontSize(prev => Math.max(prev - 2, 12));
-  };
+  const t = (key: string) => translations[language][key as keyof typeof translations['es']] || key;
 
   return (
-    <AppContext.Provider 
-      value={{ 
-        theme, 
-        toggleTheme, 
-        fontSize, 
-        increaseFontSize, 
-        decreaseFontSize,
-        idioma,
-        toggleIdioma,
+    <AppContext.Provider
+      value={{
+        isAuthenticated,
+        user,
+        login,
+        logout,
         language,
         setLanguage,
-        user,
-        updateProfilePicture
+        toggleLanguage,
+        theme,
+        toggleTheme,
+        fontSize,
+        increaseFontSize,
+        decreaseFontSize,
+        updateProfilePicture,
+        t,
       }}
     >
       {children}
@@ -79,10 +143,12 @@ export function AppProvider({ children }: { children: ReactNode }) {
   );
 }
 
-export function useApp() {
+export function useAppContext() {
   const context = useContext(AppContext);
   if (!context) {
-    throw new Error('useApp must be used within AppProvider');
+    throw new Error('useAppContext must be used within an AppProvider');
   }
   return context;
 }
+
+export const useApp = useAppContext;

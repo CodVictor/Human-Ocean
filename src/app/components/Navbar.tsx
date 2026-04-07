@@ -1,16 +1,16 @@
-import { Waves, Heart, Sun, Moon, Settings, User, ArrowLeft, Home } from 'lucide-react';
-import { useApp } from '../context/AppContext';
+import { Waves, Heart, Sun, Moon, Settings, User, ArrowLeft, Home, LogIn, LogOut } from 'lucide-react';
+import { useAppContext } from '../context/AppContext';
 import { Link, useLocation } from 'react-router';
 import { translations } from '../data/translations';
 
 export function Navbar() {
-  const { theme, toggleTheme, language, setLanguage } = useApp();
+  const { isAuthenticated, logout, theme, toggleTheme, language, toggleLanguage } = useAppContext();
   const location = useLocation();
   const aria = translations[language].aria.nav;
   const t = translations[language].nav;
 
   const handleLanguageToggle = () => {
-    setLanguage(language === 'es' ? 'en' : 'es');
+    toggleLanguage();
   };
 
   const isHomePage = location.pathname === '/';
@@ -19,8 +19,8 @@ export function Navbar() {
     <nav className="fixed top-0 left-0 right-0 z-50 bg-blue-50 dark:bg-[var(--ocean-surface)] border-b border-black/5 dark:border-white/10 backdrop-blur-sm">
       <div className="container mx-auto px-2 sm:px-4 h-16 flex items-center justify-between">
         {/* Logo */}
-        <Link 
-          to="/" 
+        <Link
+          to="/"
           title={aria.logo}
           aria-label={aria.logo}
           className="flex items-center gap-1 sm:gap-2 hover:opacity-80 transition-opacity flex-shrink-0"
@@ -36,8 +36,8 @@ export function Navbar() {
         <div className="flex items-center gap-1 sm:gap-2 md:gap-4 flex-shrink">
           {/* Back Button */}
           {!isHomePage && (
-            <Link 
-              to="/" 
+            <Link
+              to="/"
               className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-white/10 transition-colors"
               aria-label={aria.back}
               title={aria.back}
@@ -48,8 +48,8 @@ export function Navbar() {
           )}
 
           {/* Donate Button */}
-          <Link 
-            to="/donar" 
+          <Link
+            to="/donar"
             className="flex items-center gap-1 sm:gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-[var(--ocean-blue-accent)] text-white rounded-full hover:opacity-90 transition-opacity shadow-sm"
             aria-label={t.donate}
             title={t.donate}
@@ -57,6 +57,41 @@ export function Navbar() {
             <Heart className="w-4 h-4 fill-white/20" />
             <span className="hidden md:inline font-medium text-sm">{t.donate}</span>
           </Link>
+
+          {!isAuthenticated ? (
+            <Link
+              to="/login"
+              className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-white/10 transition-colors border border-black/10 dark:border-white/15"
+              aria-label={t.login}
+              title={t.login}
+            >
+              <LogIn className="w-4 h-4 sm:w-5 sm:h-5" />
+              <span className="hidden md:inline text-sm font-medium">{t.login}</span>
+            </Link>
+          ) : (
+            <>
+              {/* Profile */}
+              <Link
+                to="/perfil"
+                className="p-1.5 sm:p-2 rounded-full hover:bg-white/10 transition-colors"
+                aria-label={aria.userProfile}
+                title={aria.userProfile}
+              >
+                <User className="w-4 h-4 sm:w-5 sm:h-5" />
+              </Link>
+
+              {/* Logout */}
+              <button
+                onClick={logout}
+                className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-white/10 transition-colors border border-black/10 dark:border-white/15"
+                aria-label={t.logout}
+                title={t.logout}
+              >
+                <LogOut className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden md:inline text-sm font-medium">{t.logout}</span>
+              </button>
+            </>
+          )}
 
           {/* Language Toggle */}
           <button
@@ -68,7 +103,7 @@ export function Navbar() {
             <span>{language.toUpperCase()}</span>
           </button>
 
-           {/* Theme Toggle */}
+          {/* Theme Toggle */}
           <button
             onClick={toggleTheme}
             className="p-1.5 sm:p-2 rounded-full hover:bg-white/10 transition-colors"
@@ -79,24 +114,15 @@ export function Navbar() {
           </button>
 
           {/* Settings */}
-          <Link 
-            to="/configuracion" 
+          <Link
+            to="/configuracion"
             className="p-1.5 sm:p-2 rounded-full hover:bg-white/10 transition-colors"
             aria-label={t.settings}
             title={t.settings}
           >
             <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
           </Link>
-          
-          {/* Profile */}
-          <Link 
-            to="/perfil" 
-            className="p-1.5 sm:p-2 rounded-full hover:bg-white/10 transition-colors"
-            aria-label={aria.userProfile}
-            title={aria.userProfile}
-          >
-            <User className="w-4 h-4 sm:w-5 sm:h-5" />
-          </Link>
+
         </div>
       </div>
     </nav>

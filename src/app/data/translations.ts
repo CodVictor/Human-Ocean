@@ -50,6 +50,8 @@ export const translations = {
       }
     },
     nav: {
+      login: 'Iniciar sesión',
+      logout: 'Cerrar sesión',
       donate: 'Donar',
       settings: 'Configuración',
       profile: 'Mi Perfil',
@@ -345,6 +347,8 @@ export const translations = {
       }
     },
     nav: {
+      login: 'Log in',
+      logout: 'Log out',
       donate: 'Donate',
       settings: 'Settings',
       profile: 'My Profile',
