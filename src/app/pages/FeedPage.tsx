@@ -4,6 +4,15 @@ import { motion, AnimatePresence } from 'motion/react';
 import { useApp } from '../context/AppContext';
 import { translations } from '../data/translations';
 
+// Import video assets
+import video1 from '../assets/video1.MP4';
+import video2 from '../assets/video2.MP4';
+import video3 from '../assets/video3.MP4';
+import video4 from '../assets/video4.MP4';
+import video5 from '../assets/video5.MP4';
+import video6 from '../assets/video6.MP4';
+import video7 from '../assets/video7.MP4';
+
 interface Comment {
   name: string;
   text: string;
@@ -75,64 +84,115 @@ export function FeedPage() {
   const { language } = useApp();
 
   const t: any = translations[language as keyof typeof translations]?.feed || {};
-  const aria: any = translations[language as keyof typeof translations]?.aria?.feed || {};
 
+  // Updated videos array with local imports
   const videos: Video[] = [
     {
-      id: 'ocean-plastic',
-      videoUrl: 'https://cdn.coverr.co/videos/coverr-a-person-picking-up-plastic-on-the-beach-2636/1080p.mp4',
+      id: 'video-1',
+      videoUrl: video1,
       poster: 'https://images.unsplash.com/photo-1621451537084-482c73073a0f',
-      title: 'Plástico: El Depredador del Siglo XXI',
+      title: 'Ocean Conservation Efforts',
       author: 'EcoWatch',
       authorAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100',
       likes: 85400,
       comments: 1240,
       shares: 15600,
-      description: 'Más de 8 millones de toneladas de plástico terminan en nuestros océanos cada año. Es hora de cambiar nuestros hábitos.',
-      audio: 'Ambient Waves - Nature Sounds',
-      caption: '🛑 Cada segundo, 200kg de basura son vertidos en los océanos del mundo. No hay un Plan B.',
+      description: 'Join us in our mission to clean the beaches and protect marine life.',
+      audio: 'Nature - Ambient Waves',
+      caption: 'Every piece of plastic removed counts. 🌊',
       commentsList: [
-        { name: 'ana_verde', text: 'Esto tiene que parar ya. No podemos seguir ignorándolo.', time: '1h', likes: 450, avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100' },
-        { name: 'marcos_ocean', text: 'Impactante ver cómo están nuestras playas.', time: '3h', likes: 120, avatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100' },
-        { name: 'blue_warrior', text: '¡Increíble video! Comparto para concienciar.', time: '5h', likes: 89, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100' }
+        { name: 'ana_verde', text: 'Esto tiene que parar ya.', time: '1h', likes: 450, avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100' }
       ]
     },
     {
-      id: 'marine-life',
-      videoUrl: 'https://cdn.coverr.co/videos/coverr-waves-on-the-shoreline-5684/1080p.mp4',
+      id: 'video-2',
+      videoUrl: video2,
       poster: 'https://images.unsplash.com/photo-1551244852-d66e6c5fbd13',
-      title: 'La Belleza que Estamos Perdiendo',
+      title: 'Deep Sea Exploration',
       author: 'DeepBlue',
       authorAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100',
       likes: 42300,
       comments: 890,
       shares: 4200,
-      description: 'El equilibrio marino es vital para nuestra supervivencia. Sin un océano sano, no hay aire que respirar.',
+      description: 'Discovering the unknown depths of our blue planet.',
       audio: 'Deep Ocean Melodies',
-      caption: '🌊 El océano genera el 50% del oxígeno que respiramos. Cuidarlo es cuidarte a ti.',
-      commentsList: [
-        { name: 'ciencia_viva', text: 'Poca gente sabe que el oxígeno viene del mar, no solo de los árboles.', time: '10h', likes: 2300, avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100' },
-        { name: 'javi_explorer', text: 'He buceado allí y es otro mundo. No dejemos que muera.', time: '12h', likes: 45, avatar: 'https://images.unsplash.com/photo-1570295999919-56ceb5ecca61?w=100' }
-      ]
+      caption: 'The ocean is the lungs of our planet.',
+      commentsList: []
     },
     {
-      id: 'coral-reef',
-      videoUrl: 'https://v1.bg.cdn.videry.net/videos/2016/10/18/1476813470747_Sea_Turtle.mp4',
+      id: 'video-3',
+      videoUrl: video3,
       poster: 'https://images.unsplash.com/photo-1546026423-cc4642628d2b',
-      title: 'Héroes del Arrecife',
+      title: 'The Life of Sea Turtles',
       author: 'MarineLife',
       authorAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100',
       likes: 128900,
       comments: 3400,
       shares: 22100,
-      description: 'Las tortugas marinas son centinelas del ecosistema. Su salud refleja la salud de nuestro mundo.',
+      description: 'Witness the journey of these ancient navigators.',
       audio: 'Under The Sea - Instrumental',
-      caption: '🐢 Las tortugas marinas confunden las bolsas de plástico con medusas. Ayúdanos a evitarlo.',
-      commentsList: [
-        { name: 'salva_tortugas', text: 'Mi animal favorito en peligro por nuestra culpa...', time: '1h', likes: 890, avatar: 'https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100' },
-        { name: 'eco_hero', text: '¡Menos plástico, más vida!', time: '2h', likes: 567, avatar: 'https://images.unsplash.com/photo-1524250502761-1ac6f2e30d43?w=100' },
-        { name: 'ocean_lover', text: 'Qué belleza de animal. Hay que protegerlos.', time: '4h', likes: 1200, avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?w=100' }
-      ]
+      caption: 'Protecting nesting grounds for future generations.',
+      commentsList: []
+    },
+    {
+      id: 'video-4',
+      videoUrl: video4,
+      poster: 'https://images.unsplash.com/photo-1583212292454-1fe6229603b7',
+      title: 'Coral Reef Vitality',
+      author: 'CoralGuard',
+      authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100',
+      likes: 56200,
+      comments: 720,
+      shares: 8900,
+      description: 'The vibrant cities of the underwater world.',
+      audio: 'Coral Rhythms',
+      caption: 'Corals are living organisms, not just rocks.',
+      commentsList: []
+    },
+    {
+      id: 'video-5',
+      videoUrl: video5,
+      poster: 'https://images.unsplash.com/photo-1454789548928-9efd52dc4031',
+      title: 'Plastic Free Journey',
+      author: 'GreenLiving',
+      authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100',
+      likes: 31200,
+      comments: 450,
+      shares: 3400,
+      description: 'Small changes in your daily life lead to big results.',
+      audio: 'Minimalist Life - LoFi',
+      caption: 'Refuse, Reuse, Recycle.',
+      commentsList: []
+    },
+    {
+      id: 'video-6',
+      videoUrl: video6,
+      poster: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b',
+      title: 'Mountain Echoes',
+      author: 'PeakExplorer',
+      authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100',
+      likes: 15400,
+      comments: 210,
+      shares: 1200,
+      description: 'The connection between high peaks and water cycles.',
+      audio: 'Mountain Breeze',
+      caption: 'Where the clouds touch the earth.',
+      commentsList: []
+    },
+    {
+      id: 'video-7',
+      videoUrl: video7,
+      poster: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843',
+      title: 'Ancient Forests',
+      author: 'WildRoots',
+      authorAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100',
+      likes: 92300,
+      comments: 1100,
+      shares: 14200,
+      description: 'Walking through the history of nature.',
+      audio: 'Forest Whispers',
+      caption: 'Trees are the silence that speaks.',
+      commentsList: []
     }
   ];
 
@@ -198,7 +258,7 @@ export function FeedPage() {
       window.removeEventListener('wheel', handleWheel);
       window.removeEventListener('keydown', handleKeyDown);
     };
-  }, []);
+  }, [currentIndex]);
 
   const touchStartY = useRef(0);
   const handleTouchStart = (e: React.TouchEvent) => {
@@ -271,6 +331,7 @@ export function FeedPage() {
                 <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/75 pointer-events-none" />
               </div>
 
+              {/* Interaction icons and metadata same as original... */}
               <AnimatePresence>
                 {showHeartPop && (
                   <motion.div
@@ -375,6 +436,7 @@ export function FeedPage() {
             <button onClick={handleNext} className="p-2.5 rounded-full bg-black/40 hover:bg-black/65 text-white border border-white/10 backdrop-blur-md transition-all"><ChevronDown className="w-5 h-5" /></button>
           </div>
 
+          {/* Comments section same as original... */}
           <AnimatePresence>
             {showComments && (
               <>
