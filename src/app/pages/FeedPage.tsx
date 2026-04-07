@@ -282,9 +282,7 @@ export function FeedPage() {
         <div className="relative w-full h-full max-w-[450px] bg-zinc-950 mx-auto overflow-hidden shadow-2xl">
 
           <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-center gap-6 pt-3 pb-2 bg-gradient-to-b from-black/60 to-transparent pointer-events-none">
-            <span className="text-white/50 text-sm font-medium">Siguiendo</span>
             <span className="text-white text-sm font-bold border-b-2 border-white pb-0.5">Para ti</span>
-            <span className="text-white/50 text-sm font-medium">Buscar</span>
           </div>
 
           <AnimatePresence>
