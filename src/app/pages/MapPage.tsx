@@ -7,6 +7,7 @@ import {
   BarChart3,
   HelpCircle,
   RefreshCcw,
+  Menu,
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import { useApp } from "../context/AppContext";
@@ -168,6 +169,7 @@ export function MapPage() {
   const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null);
   const [showTutorial, setShowTutorial] = useState(true);
   const [showVideoModal, setShowVideoModal] = useState(false);
+  const [showLegend, setShowLegend] = useState(false);
 
   const getPointColor = (type: MapPoint["type"]) => {
     switch (type) {
@@ -238,23 +240,44 @@ export function MapPage() {
         </motion.div>
       </div>
 
-      {/* LEYENDA */}
-      <div className={`absolute top-24 left-8 p-6 rounded-3xl border backdrop-blur-xl z-20 shadow-2xl transition-colors ${theme === "dark" ? "bg-[#0a192f]/80 border-white/10" : "bg-white/80 border-slate-200"}`}>
-        <h3 className={`text-[10px] uppercase font-black tracking-[0.25em] mb-5 ${theme === "dark" ? "text-cyan-400/80" : "text-blue-600"}`}>{t.globalMonitor}</h3>
-        <div className="space-y-4">
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 bg-[#ef4444]"></div>
-            <span className={`text-[11px] font-medium ${theme === "dark" ? "text-white/70" : "text-slate-600"}`}>{t.criticalZone}</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 bg-[#f59e0b]" style={{ clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)" }}></div>
-            <span className={`text-[11px] font-medium ${theme === "dark" ? "text-white/70" : "text-slate-600"}`}>{t.highRisk}</span>
-          </div>
-          <div className="flex items-center gap-3">
-            <div className="w-3 h-3 rounded-full bg-[#22c55e]"></div>
-            <span className={`text-[11px] font-medium ${theme === "dark" ? "text-white/70" : "text-slate-600"}`}>{t.successProtected}</span>
-          </div>
-        </div>
+      {/* LEYENDA TIPO MENÚ / HAMBURGUESA */}
+      <div className="absolute top-20 left-4 z-40">
+        <button
+          onClick={() => setShowLegend(!showLegend)}
+          title={t.globalMonitor}
+          aria-label={t.globalMonitor}
+          className={`p-3 rounded-2xl border backdrop-blur-xl shadow-lg transition-all flex items-center gap-2 hover:scale-105 ${theme === "dark" ? "bg-[#0a192f]/90 border-white/20 text-white" : "bg-white/95 border-black/10 text-[var(--ocean-blue-accent)] hover:bg-blue-50"}`}
+        >
+          <Menu className="w-6 h-6" />
+          <span className="text-sm font-bold hidden sm:inline">{t.globalMonitor}</span>
+        </button>
+
+        <AnimatePresence>
+          {showLegend && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.9 }}
+              animate={{ opacity: 1, scale: 1 }}
+              exit={{ opacity: 0, scale: 0.9 }}
+              className={`mt-2 p-5 rounded-3xl border backdrop-blur-xl shadow-2xl transition-colors min-w-[220px] origin-top-left ${theme === "dark" ? "bg-[#0a192f]/95 border-white/20" : "bg-white/95 border-slate-200"}`}
+            >
+              <h3 className={`text-[10px] uppercase font-black tracking-[0.25em] mb-4 ${theme === "dark" ? "text-cyan-400/80" : "text-[var(--ocean-blue-accent)]"}`}>{t.globalMonitor}</h3>
+              <div className="space-y-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-4 h-4 bg-[#ef4444] rounded-sm shadow-sm border border-red-300"></div>
+                  <span className={`text-[12px] font-bold ${theme === "dark" ? "text-white/90" : "text-slate-700"}`}>{t.criticalZone}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-5 h-5 bg-[#f59e0b] shadow-sm border border-amber-300" style={{ clipPath: "polygon(50% 0%, 0% 100%, 100% 100%)" }}></div>
+                  <span className={`text-[12px] font-bold ${theme === "dark" ? "text-white/90" : "text-slate-700"}`}>{t.highRisk}</span>
+                </div>
+                <div className="flex items-center gap-3">
+                  <div className="w-4 h-4 rounded-full bg-[#22c55e] shadow-sm border border-green-300"></div>
+                  <span className={`text-[12px] font-bold ${theme === "dark" ? "text-white/90" : "text-slate-700"}`}>{t.successProtected}</span>
+                </div>
+              </div>
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
 
       {/* BOTÓN DE AYUDA */}
@@ -262,10 +285,10 @@ export function MapPage() {
         onClick={() => setShowVideoModal(true)}
         title={aria.help}
         aria-label={aria.help}
-        className={`absolute top-24 right-10 p-4 rounded-2xl border backdrop-blur-xl z-20 shadow-2xl transition-all flex items-center gap-3 ${theme === "dark" ? "bg-[#0a192f]/80 border-white/10 text-white hover:bg-white/10" : "bg-white/80 border-slate-200 text-slate-600 hover:bg-slate-50"}`}
+        className={`absolute top-20 right-4 p-3 rounded-2xl border backdrop-blur-xl z-30 shadow-lg hover:scale-105 transition-all flex items-center gap-2 ${theme === "dark" ? "bg-[#0a192f]/90 border-white/20 text-white hover:bg-white/10" : "bg-white/95 border-black/10 text-[var(--ocean-blue-accent)] hover:bg-blue-50"}`}
       >
-        <HelpCircle className="w-5 h-5" />
-        <span className="text-sm font-medium">{t.helpButton}</span>
+        <HelpCircle className="w-6 h-6" />
+        <span className="text-sm font-bold hidden sm:inline">{t.helpButton}</span>
       </button>
 
       {/* CONTROLES */}
