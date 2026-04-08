@@ -63,7 +63,7 @@ Este prototipo aplica rigurosamente los principios de usabilidad y las pautas de
 
 1.  **Clonar el repositorio:**
     ```bash
-    git clone <url-del-repositorio>
+    git clone https://github.com/CodVictor/Human-Ocean.git
     cd Human-Ocean
     ```
 
