@@ -1,73 +1,81 @@
 # Human Ocean - Prototipo ODS 14: Vida Submarina 🌊 🌍
 
-Link Prototipo: https://kaleidoscopic-churros-a4c050.netlify.app/
+**Enlace al Prototipo Interactivo:** [kaleidoscopic-churros-a4c050.netlify.app](https://kaleidoscopic-churros-a4c050.netlify.app/)
 
-¡Bienvenido a **Human Ocean**! Este es un proyecto prototipo diseñado para concientizar y promover acciones en torno al **Objetivo de Desarrollo Sostenible (ODS) 14: Vida Submarina**. Nuestra meta es conservar y utilizar de forma sostenible los océanos, los mares y los recursos marinos, fomentando la participación ciudadana a través de herramientas interactivas, mapas, juegos y seguimiento de hábitos sustentables.
+**Human Ocean** es una plataforma interactiva de alta fidelidad desarrollada para la asignatura de **Interacción Persona-Ordenador** en la Universidad Rey Juan Carlos. El proyecto tiene como misión principal la concienciación ciudadana sobre el **Objetivo de Desarrollo Sostenible (ODS) 14: Vida Submarina**, promoviendo la conservación de los océanos mediante una experiencia de usuario (UX) inclusiva y gamificada.
 
-## 👥 Nuestro Equipo: UXplorers Grupo 6
-
-- Raúl Tejada Merinero
-- Daniel Hernanz Corral
-- Marcos Hernandez Martín
-- [Nombre del integrante 4]
-- [Nombre del integrante 5]
-- [Nombre del integrante 6]
+## 👥 Nuestro Equipo: UXplorers (Grupo 6)
+Integrantes del grado en Ingeniería del Software (URJC):
+* Victor Hugo Oliveira Petroceli
+* Marcos Hernández Martín
+* Ramón Nieto Villegas
+* Daniel Hernanz Corral
+* Alonso Gutiérrez Sánchez
+* Raúl Tejada Merinero
 
 ---
 
-## 🎯 Sobre el Proyecto (ODS 14)
+## 🎯 Funcionalidades Clave
 
-El ODS 14 busca prevenir y reducir significativamente la contaminación marina de todo tipo, minimizar los efectos de la acidificación de los océanos y reglamentar de manera efectiva la explotación pesquera. **Human Ocean** sirve como una plataforma interactiva donde los usuarios pueden:
-- 🗺️ **Explorar un mapa** con información relevante sobre el estado del océano y puntos de interés.
-- 📰 **Leer un Feed** de noticias o acciones comunitarias.
-- 🔥 **Mantener rachas (streaks)** de acciones sostenibles para gamificar el hábito de cuidar el medio ambiente.
-- 🎮 **Participar en minijuegos** educativos sobre la vida marina.
-- 🫂 **Donar** y apoyar iniciativas para la limpieza de playas y cuidado del ecosistema.
+El sistema ha evolucionado de un diseño estático a una plataforma interactiva con los siguientes módulos:
+
+* 🗺️ **Mapa de Impacto Global:** Visualización de puntos críticos, áreas protegidas y zonas en riesgo mediante un sistema dinámico de capas de calor.
+* 📱 **Feed "Para ti":** Galería de vídeos cortos educativos con interfaz adaptada para una navegación fluida al estilo de redes sociales modernas.
+* 🎮 **Juegos Educativos:** Quizzes interactivos que proporcionan retroalimentación inmediata (visual y auditiva) para reforzar el aprendizaje.
+* 🔥 **Sistema de Racha y Liga:** Fomenta la recurrencia del usuario mediante mecánicas de gamificación y competición amigable.
+* 🫂 **Centro de Donaciones:** Trazabilidad de impacto real, permitiendo a los usuarios ver cómo sus contribuciones ayudan a proyectos específicos como la limpieza de playas.
+
+---
+
+## ♿ Usabilidad y Accesibilidad (WAI)
+
+Este prototipo aplica rigurosamente los principios de usabilidad y las pautas de accesibilidad WAI:
+
+1.  **Perceptible:** * Uso de **codificación redundante** en el mapa: los puntos se diferencian por color, forma geométrica (cuadrados, triángulos, círculos) y resplandor dinámico.
+    * Inclusión de **subtítulos dinámicos (CC)** y capas de contraste semitransparentes en la sección de vídeos.
+    * Control del usuario sobre el **tamaño de la fuente global** y alternancia entre modo claro/oscuro.
+
+2.  **Operable:** * **Navegación completa mediante teclado** (Tabulador y Enter) y áreas de clic ampliadas.
+    * Soporte para cambio de contenido mediante **rueda de ratón o flechas del teclado**.
+    * Mapa dotado de **físicas de arrastre (*drag*)** y controles de zoom (+/-) precisos.
+
+3.  **Comprensible:** * Uso de **iconografía metafórica intuitiva** (pin de ubicación, fuego para rachas, engranaje para ajustes).
+    * **Internacionalización global (ES/EN)** cambiable con un solo clic.
+    * **Prevención de errores** con validación de formularios en tiempo real y mensajes de error amigables.
+
+4.  **Robusto:** * Estructura semántica estandarizada en HTML5 y uso de **etiquetas descriptivas (ARIA labels)**.
+    * Diseño **responsivo y fluido** adaptado a móvil, tablet y escritorio.
+    * Estrategias de **degradación elegante (*fallbacks*)** si un recurso visual falla al cargar.
 
 ---
 
 ## 🛠️ Tecnologías Utilizadas
 
-Este proyecto utiliza tecnologías modernas de desarrollo web para garantizar un rendimiento óptimo y una experiencia de usuario (UX) rica y fluida:
-
-- **Frontend Framework:** [React](https://react.dev/) (v18)
-- **Build Tool:** [Vite](https://vitejs.dev/)
-- **Lenguaje:** [TypeScript](https://www.typescriptlang.org/)
-- **Estilos:** [Tailwind CSS](https://tailwindcss.com/)
-- **Componentes UI:** [Radix UI](https://www.radix-ui.com/) y [Material UI (MUI)](https://mui.com/)
-- **Animaciones:** [Framer Motion](https://www.framer.com/motion/)
-- **Enrutamiento:** [React Router](https://reactrouter.com/) (v7)
+* **Framework:** React 18 + Vite.
+* **Lenguaje:** TypeScript.
+* **Estilos:** Tailwind CSS (Claro/Oscuro).
+* **Animaciones:** Framer Motion.
+* **Iconografía:** Lucide React.
 
 ---
 
 ## 🚀 Instalación y Ejecución Local
 
-Si deseas correr este proyecto en tu entorno local, sigue los siguientes pasos:
+1.  **Clonar el repositorio:**
+    ```bash
+    git clone <url-del-repositorio>
+    cd Human-Ocean
+    ```
 
-### 1. Clonar el repositorio
-```bash
-git clone <url-del-repositorio>
-cd Human-Ocean
-```
+2.  **Instalar dependencias:**
+    ```bash
+    npm install
+    ```
 
-### 2. Instalar las dependencias
-Asegúrate de tener [Node.js](https://nodejs.org/) instalado. Puedes usar `npm` (o `pnpm` / `yarn`):
-```bash
-npm install
-```
-
-### 3. Ejecutar el servidor de desarrollo
-Inicia el entorno de desarrollo usando Vite:
-```bash
-npm run dev
-```
-La aplicación estará disponible usualmente en `http://localhost:5173`.
-
-### 4. Construir para Producción
-Para generar los archivos estáticos optimizados:
-```bash
-npm run build
-```
+3.  **Iniciar el modo desarrollo:**
+    ```bash
+    npm run dev
+    ```
 
 ---
 
@@ -94,4 +102,7 @@ Si deseas sumar a la causa del **ODS 14** a través de código o diseño:
 
 ---
 
-🌿 **¡Cada pequeña acción cuenta! Juntos podemos proteger nuestros océanos.** 🌊
+## 📁 Evolución del Proyecto
+El prototipo nació en **Canva** como un modelo estático (Práctica 1) y fue migrado a **Figma** para su desarrollo interactivo. Finalmente, se ha implementado en código real para maximizar la interactividad y cumplir con los estándares de accesibilidad actuales.
+
+🌿 **Juntos podemos proteger nuestros océanos. Cada píxel cuenta.** 🌊
