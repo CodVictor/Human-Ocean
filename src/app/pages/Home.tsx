@@ -4,9 +4,12 @@ import { motion } from 'motion/react';
 import { useApp } from '../context/AppContext';
 import { translations } from '../data/translations';
 
+import darkMapImage from '../assets/darkmodemap.png';
+import lightMapImage from '../assets/lightmodemap.png';
+
 export function Home() {
   const navigate = useNavigate();
-  const { language } = useApp();
+  const { language, theme } = useApp();
   const t = translations[language].home;
   const aria = translations[language].aria.home;
 
@@ -78,7 +81,7 @@ export function Home() {
             {/* Background image preview */}
             <div className="absolute inset-0">
               <img 
-                src="src/app/assets/darkmodemap.png"
+                src={theme === 'dark' ? darkMapImage : lightMapImage}
                 alt="Ocean Impact Map"
                 className="w-full h-full object-cover opacity-60 group-hover:scale-105 transition-transform duration-700"
               />

@@ -32,8 +32,8 @@ export function Navbar() {
           )}
         </Link>
 
-        {/* Actions */}
-        <div className="flex items-center gap-1 sm:gap-2 md:gap-4 flex-shrink">
+        {/* Actions - Scrollable on mobile to avoid double lines */}
+        <div className="flex items-center gap-1 sm:gap-2 md:gap-4 flex-1 justify-end overflow-x-auto [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
           {/* Back Button */}
           {!isHomePage && (
             <Link

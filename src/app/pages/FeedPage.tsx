@@ -301,10 +301,6 @@ export function FeedPage() {
       <div className="flex-1 relative flex items-center justify-center pt-16">
         <div className="relative w-full h-full max-w-[450px] bg-secondary mx-auto overflow-hidden shadow-2xl sm:border-x sm:border-border transition-colors duration-300">
 
-          <div className="absolute top-0 left-0 right-0 z-40 flex items-center justify-center gap-6 pt-3 pb-2 bg-gradient-to-b from-black/60 to-transparent pointer-events-none">
-            <span className="text-white text-sm font-bold border-b-2 border-white pb-0.5">Para ti</span>
-          </div>
-
           <AnimatePresence>
             {captionsEnabled && (
               <motion.div
