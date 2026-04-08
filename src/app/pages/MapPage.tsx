@@ -9,7 +9,7 @@ import {
   RefreshCcw,
   Menu,
 } from "lucide-react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence, useAnimation } from "motion/react";
 import { useApp } from "../context/AppContext";
 import { translations } from "../data/translations";
 
@@ -34,6 +34,7 @@ interface MapPoint {
 export function MapPage() {
   const [zoom, setZoom] = useState(1);
   const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0, top: 0, bottom: 0 });
+  const controls = useAnimation();
   const { language, theme } = useApp();
   const t = translations[language].map;
   const aria = translations[language].aria.map;
@@ -54,17 +55,20 @@ export function MapPage() {
     const newZoom = Math.min(zoom + 0.5, 3);
     setZoom(newZoom);
     updateDragConstraints(newZoom);
+    controls.start({ scale: newZoom });
   };
 
   const handleZoomOut = () => {
     const newZoom = Math.max(zoom - 0.5, 1);
     setZoom(newZoom);
     updateDragConstraints(newZoom);
+    controls.start({ scale: newZoom });
   };
 
   const handleZoomReset = () => {
     setZoom(1);
     updateDragConstraints(1);
+    controls.start({ scale: 1, x: 0, y: 0 });
   };
 
   const mapPoints: MapPoint[] = [
@@ -196,7 +200,8 @@ export function MapPage() {
           drag
           dragConstraints={dragConstraints}
           dragElastic={0.1}
-          animate={{ scale: zoom }}
+          animate={controls}
+          initial={{ scale: 1, x: 0, y: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
         >
           {/* MAPA */}
