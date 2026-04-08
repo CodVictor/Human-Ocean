@@ -47,12 +47,12 @@ export function DonationLoadingModal({ isOpen, onComplete }: DonationLoadingModa
     <AnimatePresence>
       {isOpen && (
         <div className="fixed inset-0 z-50 flex items-center justify-center pointer-events-auto">
-          {/* Overlay: Very dark navy blue with slight blur */}
+          {/* Overlay */}
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="absolute inset-0 bg-[#030b1c]/80 backdrop-blur-sm"
+            className="absolute inset-0 bg-slate-900/40 dark:bg-[#030b1c]/80 backdrop-blur-sm"
           />
 
           {/* Minimalist Card */}
@@ -61,7 +61,7 @@ export function DonationLoadingModal({ isOpen, onComplete }: DonationLoadingModa
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.95, y: 10 }}
             transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-            className="relative w-full max-w-sm mx-4 bg-[#0d1527] border border-white/5 rounded-3xl p-8 shadow-2xl overflow-hidden"
+            className="relative w-full max-w-sm mx-4 bg-white dark:bg-[#0d1527] border border-slate-200 dark:border-white/5 rounded-3xl p-8 shadow-2xl overflow-hidden"
           >
             {/* Subtle glow behind the card content */}
             <div className="absolute inset-0 bg-gradient-to-b from-[var(--ocean-blue-accent)]/5 to-transparent pointer-events-none" />
@@ -72,7 +72,7 @@ export function DonationLoadingModal({ isOpen, onComplete }: DonationLoadingModa
                 initial={{ opacity: 0, y: -5 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.1 }}
-                className="text-white font-sans text-lg font-medium tracking-wide text-center mb-8"
+                className="text-slate-900 dark:text-white font-sans text-lg font-medium tracking-wide text-center mb-8"
               >
                 {t.preparing || 'Preparando donación...'}
               </motion.p>
@@ -84,10 +84,10 @@ export function DonationLoadingModal({ isOpen, onComplete }: DonationLoadingModa
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ delay: 0.2, type: 'spring' }}
               >
-                <span className="text-6xl font-black text-white tracking-tighter tabular-nums drop-shadow-md">
+                <span className="text-6xl font-black text-slate-900 dark:text-white tracking-tighter tabular-nums drop-shadow-md">
                   {Math.floor(progress)}
                 </span>
-                <span className="text-3xl font-bold text-white/50 ml-1">%</span>
+                <span className="text-3xl font-bold text-slate-500 dark:text-white/50 ml-1">%</span>
                 
                 {/* Glow behind numbers */}
                 <div className="absolute inset-0 bg-[var(--ocean-blue-accent)]/20 blur-xl rounded-full scale-150 -z-10" />
@@ -95,8 +95,8 @@ export function DonationLoadingModal({ isOpen, onComplete }: DonationLoadingModa
 
               {/* Wide Horizontal Progress Bar */}
               <div className="w-full relative mt-2">
-                {/* Track: Dark greyish blue */}
-                <div className="h-4 w-full bg-slate-800/80 rounded-full overflow-hidden shadow-inner border border-white/5">
+                {/* Track */}
+                <div className="h-4 w-full bg-slate-100 dark:bg-slate-800/80 rounded-full overflow-hidden shadow-inner border border-slate-200 dark:border-white/5">
                   {/* Indicator: Bright blue */}
                   <div
                     className="h-full bg-[var(--ocean-blue-accent)] rounded-full relative transition-all duration-75 ease-linear"

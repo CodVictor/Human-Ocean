@@ -21,28 +21,28 @@ export function ThankYouPage() {
       <div 
         className="absolute inset-0 z-0"
         style={{
-          backgroundImage: `url('https://images.unsplash.com/photo-1589363794163-c428490365c7?crop=entropy&cs=tinysrgb&fit=max&fm=jpg&ixid=M3w3Nzg4Nzd8MHwxfHNlYXJjaHwxfHxqZWxseWZpc2glMjBkZWVwJTIwb2NlYW4lMjB1bmRlcndhdGVyJTIwZGFyayUyMGJsdWV8ZW58MXx8fHwxNzczMzk5NzI1fDA&ixlib=rb-4.1.0&q=80&w=1080&utm_source=figma&utm_medium=referral')`,
+          backgroundImage: `url('https://images.unsplash.com/photo-1651871756929-09d7bde4e97d?auto=format&fit=crop&q=100&w=3840')`,
           backgroundSize: 'cover',
           backgroundPosition: 'center',
           backgroundRepeat: 'no-repeat'
         }}
       >
-        <div className="absolute inset-0 bg-black/40"></div>
+        <div className="absolute inset-0 bg-black/10"></div>
       </div>
 
       {/* Header Bar */}
-      <header className="relative z-10 bg-[#001F3F]/80 backdrop-blur-md border-b border-white/10">
+      <header className="relative z-10 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md border-b border-slate-200/50 dark:border-white/10">
         <div className="max-w-7xl mx-auto px-6 py-4">
           <div className="flex items-center justify-between flex-wrap gap-4">
             {/* Logo */}
-            <div className="text-2xl font-bold text-white">Human&Ocean</div>
+            <div className="text-2xl font-bold text-slate-900 dark:text-white">Human&Ocean</div>
             
             {/* Navigation */}
             <nav className="flex items-center gap-3 md:gap-6 flex-wrap">
               {/* Back Button */}
               <Link 
                 to="/" 
-                className="flex items-center gap-2 text-white/90 hover:text-white transition-colors"
+                className="flex items-center gap-2 text-slate-600 dark:text-white/90 hover:text-blue-600 dark:hover:text-white transition-colors"
               >
                 <ArrowLeft className="w-5 h-5" />
                 <span className="hidden sm:inline">{t.nav.back}</span>
@@ -51,7 +51,7 @@ export function ThankYouPage() {
               {/* Settings */}
               <Link 
                 to="/configuracion" 
-                className="flex items-center gap-2 text-white/90 hover:text-white transition-colors"
+                className="flex items-center gap-2 text-slate-600 dark:text-white/90 hover:text-blue-600 dark:hover:text-white transition-colors"
               >
                 <Settings className="w-5 h-5" />
                 <span className="hidden sm:inline">{t.nav.settings}</span>
@@ -60,7 +60,7 @@ export function ThankYouPage() {
               {/* Profile */}
               <Link 
                 to="/profile" 
-                className="flex items-center gap-2 text-white/90 hover:text-white transition-colors"
+                className="flex items-center gap-2 text-slate-600 dark:text-white/90 hover:text-blue-600 dark:hover:text-white transition-colors"
               >
                 <User className="w-5 h-5" />
                 <span className="hidden sm:inline">{t.nav.profile}</span>
@@ -69,7 +69,7 @@ export function ThankYouPage() {
               {/* Language Toggle */}
               <button
                 onClick={() => setLanguage(language === 'es' ? 'en' : 'es')}
-                className="flex items-center gap-2 text-white/90 hover:text-white transition-colors"
+                className="flex items-center gap-2 text-slate-600 dark:text-white/90 hover:text-blue-600 dark:hover:text-white transition-colors"
               >
                 <span className="text-xl">{language === 'es' ? '🇪🇸' : '🇬🇧'}</span>
                 <span className="hidden sm:inline">{t.nav.language}</span>
@@ -77,12 +77,12 @@ export function ThankYouPage() {
 
               {/* Theme Toggle */}
               <div className="flex items-center gap-2">
-                <Sun className="w-4 h-4 text-white/90" />
+                <Sun className="w-4 h-4 text-slate-600 dark:text-white/90" />
                 <Switch 
                   checked={theme === 'dark'} 
                   onCheckedChange={toggleTheme}
                 />
-                <Moon className="w-4 h-4 text-white/90" />
+                <Moon className="w-4 h-4 text-slate-600 dark:text-white/90" />
               </div>
             </nav>
           </div>
@@ -95,14 +95,14 @@ export function ThankYouPage() {
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut" }}
-          className="max-w-3xl w-full bg-[#001F3F]/90 backdrop-blur-md rounded-[20px] p-6 md:p-12 shadow-2xl border border-white/10"
+          className="max-w-3xl w-full bg-white/90 dark:bg-slate-900/90 backdrop-blur-md rounded-[20px] p-6 md:p-12 shadow-2xl border border-slate-200/50 dark:border-slate-700/50"
         >
           {/* Heading */}
           <motion.h1 
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2, duration: 0.5 }}
-            className="text-3xl md:text-4xl lg:text-5xl font-bold text-white text-center mb-6 md:mb-8"
+            className="text-3xl md:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white text-center mb-6 md:mb-8"
           >
             {t.thankYou.title}
           </motion.h1>
@@ -112,10 +112,10 @@ export function ThankYouPage() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.3, duration: 0.5 }}
-            className="bg-[#042940]/80 rounded-[20px] p-4 md:p-6 mb-6 md:mb-8 text-center border border-white/20"
+            className="bg-slate-100/80 dark:bg-slate-800/80 rounded-[20px] p-4 md:p-6 mb-6 md:mb-8 text-center border border-slate-200 dark:border-slate-700"
           >
-            <p className="text-xl md:text-2xl lg:text-3xl font-bold text-white">
-              {t.thankYou.donated} <span className="text-[#0074D9]">{amount}€</span>
+            <p className="text-xl md:text-2xl lg:text-3xl font-bold text-slate-900 dark:text-white">
+              {t.thankYou.donated} <span className="text-blue-600 dark:text-blue-400">{amount}€</span>
             </p>
           </motion.div>
 
@@ -124,7 +124,7 @@ export function ThankYouPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ delay: 0.4, duration: 0.5 }}
-            className="text-base md:text-lg lg:text-xl text-white/90 text-center leading-relaxed mb-6 md:mb-8"
+            className="text-base md:text-lg lg:text-xl text-slate-700 dark:text-slate-300 text-center leading-relaxed mb-6 md:mb-8"
           >
             {t.thankYou.message}
           </motion.p>
