@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { Flame, TrendingUp, TrendingDown, Share2, Check } from 'lucide-react';
 import { motion } from 'motion/react';
 import { useApp } from '../context/AppContext';
@@ -27,6 +28,25 @@ const weekDays = [
 export function StreakPage() {
   const { language } = useApp();
   const t = translations[language].streak;
+  const [isShared, setIsShared] = useState(false);
+
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Human & Ocean - Racha',
+          text: '¡Mira mi racha y únete a la liga en Human & Ocean!',
+          url: window.location.href,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+      }
+      setIsShared(true);
+      setTimeout(() => setIsShared(false), 2000);
+    } catch (err) {
+      console.log('Compartir cancelado o error:', err);
+    }
+  };
 
   return (
     <div className="min-h-screen pt-16">
@@ -165,9 +185,16 @@ export function StreakPage() {
               </div>
 
               {/* Share button */}
-              <button className="w-full mt-6 px-4 py-3 bg-[var(--ocean-blue-accent)] text-white rounded-xl hover:opacity-90 transition-opacity flex items-center justify-center gap-2">
+              <button 
+                onClick={handleShare}
+                className={`w-full mt-6 px-4 py-3 rounded-xl transition-opacity flex items-center justify-center gap-2 ${
+                  isShared 
+                    ? 'bg-green-500 text-white hover:opacity-100' 
+                    : 'bg-[var(--ocean-blue-accent)] text-white hover:opacity-90'
+                }`}
+              >
                 <Share2 className="w-5 h-5" />
-                {t.shareLogs}
+                {isShared ? '¡Listo!' : t.shareLogs}
               </button>
             </motion.div>
           </div>

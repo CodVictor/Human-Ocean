@@ -19,6 +19,26 @@ export function GamesPage() {
   const [score, setScore] = useState(0);
   const [timeLeft, setTimeLeft] = useState(60);
   const [isFinished, setIsFinished] = useState(false);
+  const [isShared, setIsShared] = useState(false);
+
+  const handleShare = async () => {
+    // Determine title lazily using activeQuiz based on language later, or we can use the localized current one
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: 'Human & Ocean - Juegos',
+          text: `¡He comprobado mis conocimientos sobre fauna marina! ¿Me superas?`,
+          url: window.location.href,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+      }
+      setIsShared(true);
+      setTimeout(() => setIsShared(false), 2000);
+    } catch (err) {
+      console.log('Compartir cancelado o error:', err);
+    }
+  };
 
   const finalMessages = {
     es: {
@@ -387,9 +407,14 @@ export function GamesPage() {
                     aria-label={aria.share}
                     whileHover={{ scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
-                    className="flex-1 py-2.5 flex items-center justify-center gap-2 rounded-xl bg-card hover:bg-muted text-sm font-bold border border-border"
+                    onClick={handleShare}
+                    className={`flex-1 py-2.5 flex items-center justify-center gap-2 rounded-xl text-sm font-bold border transition-colors ${
+                      isShared
+                        ? 'bg-green-500 border-green-500 text-white'
+                        : 'bg-card hover:bg-muted border-border'
+                    }`}
                   >
-                    <Share2 className="w-4 h-4" /> {t.share}
+                    <Share2 className="w-4 h-4" /> {isShared ? '¡Listo!' : t.share}
                   </motion.button>
                 </div>
               </motion.div>

@@ -256,9 +256,22 @@ export function FeedPage() {
     setTimeout(() => setShowHeartPop(false), 900);
   };
 
-  const handleShare = () => {
-    setShareFlash(true);
-    setTimeout(() => setShareFlash(false), 1500);
+  const handleShare = async () => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: currentVideo.title,
+          text: `¡Mira esto en Human & Ocean! - ${currentVideo.title}`,
+          url: window.location.href,
+        });
+      } else {
+        await navigator.clipboard.writeText(window.location.href);
+      }
+      setShareFlash(true);
+      setTimeout(() => setShareFlash(false), 1500);
+    } catch (err) {
+      console.log('Compartir cancelado o error:', err);
+    }
   };
 
   useEffect(() => {
