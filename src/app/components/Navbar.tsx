@@ -58,6 +58,42 @@ export function Navbar() {
             <span className="hidden md:inline font-medium text-sm">{t.donate}</span>
           </Link>
 
+
+
+          {/* Language Toggle */}
+          <button
+            onClick={handleLanguageToggle}
+            className="flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-white/10 transition-colors font-semibold text-xs sm:text-sm border border-transparent dark:border-white/10"
+            aria-label={aria.languageToggle}
+            title={aria.languageToggle}
+          >
+            <span>{language.toUpperCase()}</span>
+          </button>
+
+          {/* Theme Toggle */}
+          <button
+            onClick={toggleTheme}
+            className="p-1.5 sm:p-2 rounded-full hover:bg-white/10 transition-colors"
+            aria-label={aria.toggleTheme}
+            title={aria.toggleTheme}
+          >
+            {theme === 'dark' ? <Sun className="w-4 h-4 sm:w-5 sm:h-5" /> : <Moon className="w-4 h-4 sm:w-5 sm:h-5" />}
+          </button>
+
+          {/* Settings */}
+          <Link
+            to="/configuracion"
+            className="p-1.5 sm:p-2 rounded-full hover:bg-white/10 transition-colors"
+            aria-label={t.settings}
+            title={t.settings}
+          >
+            <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
+          </Link>
+
+          {/* Separator */}
+          <div className="w-[1px] h-6 bg-black/10 dark:bg-white/10 mx-1 sm:mx-2 hidden sm:block" />
+
+          {/* Auth Section */}
           {!isAuthenticated ? (
             <>
               <Link
@@ -104,36 +140,6 @@ export function Navbar() {
               </button>
             </>
           )}
-
-          {/* Language Toggle */}
-          <button
-            onClick={handleLanguageToggle}
-            className="flex items-center gap-1 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-white/10 transition-colors font-semibold text-xs sm:text-sm border border-transparent dark:border-white/10"
-            aria-label={aria.languageToggle}
-            title={aria.languageToggle}
-          >
-            <span>{language.toUpperCase()}</span>
-          </button>
-
-          {/* Theme Toggle */}
-          <button
-            onClick={toggleTheme}
-            className="p-1.5 sm:p-2 rounded-full hover:bg-white/10 transition-colors"
-            aria-label={aria.toggleTheme}
-            title={aria.toggleTheme}
-          >
-            {theme === 'dark' ? <Sun className="w-4 h-4 sm:w-5 sm:h-5" /> : <Moon className="w-4 h-4 sm:w-5 sm:h-5" />}
-          </button>
-
-          {/* Settings */}
-          <Link
-            to="/configuracion"
-            className="p-1.5 sm:p-2 rounded-full hover:bg-white/10 transition-colors"
-            aria-label={t.settings}
-            title={t.settings}
-          >
-            <Settings className="w-4 h-4 sm:w-5 sm:h-5" />
-          </Link>
 
         </div>
       </div>
