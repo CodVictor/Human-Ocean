@@ -91,7 +91,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     streak: 47,
   });
   const [language, setLanguage] = useState<Language>('es');
-  const [theme, setTheme] = useState<Theme>('light');
+  const [theme, setTheme] = useState<Theme>('dark');
   const [fontSize, setFontSize] = useState(16);
 
   useEffect(() => {

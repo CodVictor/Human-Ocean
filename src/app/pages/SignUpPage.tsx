@@ -5,7 +5,7 @@ import { motion } from 'motion/react';
 import { Mail, Lock, User, ArrowRight, Anchor } from 'lucide-react';
 
 export function SignupPage() {
-    const { t } = useAppContext();
+    const { t, language } = useAppContext();
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -14,12 +14,105 @@ export function SignupPage() {
         password: '',
     });
 
+    const [errors, setErrors] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+    });
+
+    const validateName = (value: string): string => {
+        const trimmed = value.trim();
+        if (trimmed.length < 2) {
+            return language === 'es'
+                ? 'Tu nombre es un poquito corto. Por favor, escribe al menos 2 letras.'
+                : 'Your name is a bit short. Please type at least 2 letters.';
+        }
+        if (trimmed.length > 20) {
+            return language === 'es'
+                ? 'El nombre que has introducido es demasiado largo. Te sugerimos que uses 20 letras como máximo.'
+                : 'The name you entered is a bit too long. We would appreciate it if you use a maximum of 20 letters.';
+        }
+        return '';
+    };
+
+    const validateEmail = (value: string): string => {
+        const trimmed = value.trim();
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (trimmed.length === 0) {
+            return language === 'es'
+                ? 'Nos gustaría conocer tu correo. Por favor, escríbelo aquí.'
+                : 'We would like to know your email. Please write it here.';
+        }
+        if (!emailRegex.test(trimmed)) {
+            return language === 'es'
+                ? 'Parece que falta algo en tu correo, como una "@" o el dominio. ¿Podrías revisarlo?'
+                : 'It seems something is missing in your email, like an "@" or the domain. Could you check it?';
+        }
+        if (trimmed.length > 200) {
+            return language === 'es'
+                ? 'Este correo es muy extenso. Por favor, intenta con uno más corto, de hasta 200 letras.'
+                : 'This email is very long. Please try a shorter one, up to 200 letters.';
+        }
+        return '';
+    };
+
+    const validatePassword = (value: string): string => {
+        if (value.trim().length === 0) {
+            return language === 'es'
+                ? 'Necesitamos una contraseña para crear tu cuenta. Puedes escribirla aquí con tranquilidad.'
+                : 'We need a password to create your account. You can type it here safely.';
+        }
+        if (value.length < 8) {
+            return language === 'es'
+                ? 'Tu contraseña es un poquito corta. Te sugerimos usar al menos 8 caracteres.'
+                : 'Your password is a little short. We suggest using at least 8 characters.';
+        }
+        if (value.length > 64) {
+            return language === 'es'
+                ? 'Tu contraseña es demasiado larga. Prueba con una de hasta 64 caracteres.'
+                : 'Your password is too long. Please use up to 64 characters.';
+        }
+        return '';
+    };
+
+    const isFormInvalid =
+        !formData.firstName.trim() ||
+        !formData.lastName.trim() ||
+        !formData.email.trim() ||
+        !formData.password.trim() ||
+        !!errors.firstName ||
+        !!errors.lastName ||
+        !!errors.email ||
+        !!errors.password;
+
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        const nextErrors = {
+            firstName: validateName(formData.firstName),
+            lastName: validateName(formData.lastName),
+            email: validateEmail(formData.email),
+            password: validatePassword(formData.password),
+        };
+        setErrors(nextErrors);
+
+        if (Object.values(nextErrors).some(Boolean)) return;
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setFormData({ ...formData, [e.target.name]: e.target.value });
+        const { name, value } = e.target;
+        setFormData({ ...formData, [name]: value });
+
+        if (name === 'firstName') {
+            setErrors((prev) => ({ ...prev, firstName: validateName(value) }));
+        } else if (name === 'lastName') {
+            setErrors((prev) => ({ ...prev, lastName: validateName(value) }));
+        } else if (name === 'email') {
+            setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+        } else if (name === 'password') {
+            setErrors((prev) => ({ ...prev, password: validatePassword(value) }));
+        }
     };
 
     return (
@@ -80,10 +173,14 @@ export function SignupPage() {
                                         required
                                         value={formData.firstName}
                                         onChange={handleChange}
+                                        aria-invalid={!!errors.firstName}
                                         className="block w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl leading-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-shadow"
                                         placeholder="Marina"
                                     />
                                 </div>
+                                {errors.firstName && (
+                                    <p className="text-xs text-red-600 dark:text-red-400 ml-1">{errors.firstName}</p>
+                                )}
                             </div>
                             <div className="space-y-1">
                                 <label className="text-xs font-medium text-slate-700 dark:text-slate-300 ml-1">
@@ -95,9 +192,13 @@ export function SignupPage() {
                                     required
                                     value={formData.lastName}
                                     onChange={handleChange}
+                                    aria-invalid={!!errors.lastName}
                                     className="block w-full px-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl leading-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-shadow"
                                     placeholder="García"
                                 />
+                                {errors.lastName && (
+                                    <p className="text-xs text-red-600 dark:text-red-400 ml-1">{errors.lastName}</p>
+                                )}
                             </div>
                         </div>
 
@@ -115,10 +216,14 @@ export function SignupPage() {
                                     required
                                     value={formData.email}
                                     onChange={handleChange}
+                                    aria-invalid={!!errors.email}
                                     className="block w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl leading-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-shadow"
                                     placeholder="ejemplo@correo.com"
                                 />
                             </div>
+                            {errors.email && (
+                                <p className="text-xs text-red-600 dark:text-red-400 ml-1">{errors.email}</p>
+                            )}
                         </div>
 
                         <div className="space-y-1">
@@ -135,16 +240,21 @@ export function SignupPage() {
                                     required
                                     value={formData.password}
                                     onChange={handleChange}
+                                    aria-invalid={!!errors.password}
                                     className="block w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl leading-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-shadow"
                                     placeholder="••••••••"
                                 />
                             </div>
+                            {errors.password && (
+                                <p className="text-xs text-red-600 dark:text-red-400 ml-1">{errors.password}</p>
+                            )}
                         </div>
 
                         <div className="pt-2">
                             <button
                                 type="submit"
-                                className="group relative w-full flex items-center justify-center py-2.5 px-4 gap-2 border border-transparent text-sm font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-md shadow-blue-500/20"
+                                disabled={isFormInvalid}
+                                className="group relative w-full flex items-center justify-center py-2.5 px-4 gap-2 border border-transparent text-sm font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 disabled:bg-slate-400 disabled:text-slate-100 disabled:shadow-none disabled:cursor-not-allowed focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-md shadow-blue-500/20"
                             >
                                 <span>{t('signup.submit')}</span>
                                 <ArrowRight className="h-4 w-4 mt-[2px] group-hover:translate-x-1 transition-transform" />
