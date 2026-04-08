@@ -49,13 +49,6 @@ export function SignupPage() {
                     </div>
 
                     <div className="relative z-10 mt-auto hidden md:block">
-                        <div className="flex -space-x-3 mb-3">
-                            {[1, 2, 3, 4].map((i) => (
-                                <div key={i} className="w-8 h-8 rounded-full border-2 border-blue-700 dark:border-blue-900 bg-blue-300 dark:bg-blue-600 flex items-center justify-center text-xs font-bold text-blue-900 dark:text-blue-200">
-                                    {i}
-                                </div>
-                            ))}
-                        </div>
                         <p className="text-xs text-blue-200">Únete a más de 10,000 activistas</p>
                     </div>
                 </div>

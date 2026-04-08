@@ -1,4 +1,4 @@
-import { Waves, Heart, Sun, Moon, Settings, User, ArrowLeft, Home, LogIn, LogOut } from 'lucide-react';
+import { Waves, Heart, Sun, Moon, Settings, User, ArrowLeft, Home, LogIn, LogOut, UserPlus } from 'lucide-react';
 import { useAppContext } from '../context/AppContext';
 import { Link, useLocation } from 'react-router';
 import { translations } from '../data/translations';
@@ -59,15 +59,27 @@ export function Navbar() {
           </Link>
 
           {!isAuthenticated ? (
-            <Link
-              to="/login"
-              className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-white/10 transition-colors border border-black/10 dark:border-white/15"
-              aria-label={t.login}
-              title={t.login}
-            >
-              <LogIn className="w-4 h-4 sm:w-5 sm:h-5" />
-              <span className="hidden md:inline text-sm font-medium">{t.login}</span>
-            </Link>
+            <>
+              <Link
+                to="/login"
+                className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-white/10 transition-colors border border-black/10 dark:border-white/15"
+                aria-label={t.login}
+                title={t.login}
+              >
+                <LogIn className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden md:inline text-sm font-medium">{t.login}</span>
+              </Link>
+
+              <Link
+                to="/signup"
+                className="flex items-center gap-1 sm:gap-2 px-2 sm:px-3 py-1.5 sm:py-2 rounded-full hover:bg-white/10 transition-colors border border-black/10 dark:border-white/15"
+                aria-label={t.signup}
+                title={t.signup}
+              >
+                <UserPlus className="w-4 h-4 sm:w-5 sm:h-5" />
+                <span className="hidden md:inline text-sm font-medium">{t.signup}</span>
+              </Link>
+            </>
           ) : (
             <>
               {/* Profile */}
