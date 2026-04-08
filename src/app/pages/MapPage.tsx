@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import {
   ZoomIn,
   ZoomOut,
@@ -33,41 +33,26 @@ interface MapPoint {
 
 export function MapPage() {
   const [zoom, setZoom] = useState(1);
-  const [dragConstraints, setDragConstraints] = useState({ left: 0, right: 0, top: 0, bottom: 0 });
+  const containerRef = useRef<HTMLDivElement>(null);
   const controls = useAnimation();
   const { language, theme } = useApp();
   const t = translations[language].map;
   const aria = translations[language].aria.map;
 
-  // Actualizar los límites de drag cuando cambia el zoom
-  const updateDragConstraints = (newZoom: number) => {
-    const maxDragDistance = 1000; // Aumentado para más libertad de movimiento
-    const scaledDistance = maxDragDistance * (newZoom - 1);
-    setDragConstraints({
-      left: -scaledDistance,
-      right: scaledDistance,
-      top: -scaledDistance,
-      bottom: scaledDistance,
-    });
-  };
-
   const handleZoomIn = () => {
     const newZoom = Math.min(zoom + 0.5, 3);
     setZoom(newZoom);
-    updateDragConstraints(newZoom);
     controls.start({ scale: newZoom });
   };
 
   const handleZoomOut = () => {
     const newZoom = Math.max(zoom - 0.5, 1);
     setZoom(newZoom);
-    updateDragConstraints(newZoom);
     controls.start({ scale: newZoom });
   };
 
   const handleZoomReset = () => {
     setZoom(1);
-    updateDragConstraints(1);
     controls.start({ scale: 1, x: 0, y: 0 });
   };
 
@@ -121,53 +106,53 @@ export function MapPage() {
       temperature: 23.2, pollutionLevel: 5, species: 2900, trend: "up",
     },
     {
-    id: "gulf-dead-zone",
-    x: 18, y: 38,
-    type: "critical",
-    title: t.mapPoints.gulfDeadZone.title,
-    description: t.mapPoints.gulfDeadZone.description,
-    temperature: 27.2, pollutionLevel: 92, species: 40, trend: "up",
-  },
-  {
-    id: "sargasso-sea",
-    x: 28, y: 45,
-    type: "warning",
-    title: t.mapPoints.sargassoSea.title,
-    description: t.mapPoints.sargassoSea.description,
-    temperature: 24.5, pollutionLevel: 58, species: 110, trend: "up",
-  },
-  {
-    id: "coral-triangle",
-    x: 78, y: 60,
-    type: "warning",
-    title: t.mapPoints.coralTriangle.title,
-    description: t.mapPoints.coralTriangle.description,
-    temperature: 29.1, pollutionLevel: 45, species: 3000, trend: "down",
-  },
-  {
-    id: "cabo-pulmo",
-    x: 12, y: 42,
-    type: "success",
-    title: t.mapPoints.caboPulmo.title,
-    description: t.mapPoints.caboPulmo.description,
-    temperature: 25.8, pollutionLevel: 3, species: 800, trend: "up",
-  },
-  {
-    id: "southern-ocean",
-    x: 50, y: 92,
-    type: "critical",
-    title: t.mapPoints.southernOcean.title,
-    description: t.mapPoints.southernOcean.description,
-    temperature: -1.5, pollutionLevel: 7, species: 20, trend: "up",
-  },
-  {
-    id: "chagos-success",
-    x: 64, y: 68,
-    type: "success",
-    title: t.mapPoints.chagosSuccess.title,
-    description: t.mapPoints.chagosSuccess.description,
-    temperature: 28.3, pollutionLevel: 2, species: 1150, trend: "stable",
-  }
+      id: "gulf-dead-zone",
+      x: 18, y: 38,
+      type: "critical",
+      title: t.mapPoints.gulfDeadZone.title,
+      description: t.mapPoints.gulfDeadZone.description,
+      temperature: 27.2, pollutionLevel: 92, species: 40, trend: "up",
+    },
+    {
+      id: "sargasso-sea",
+      x: 28, y: 45,
+      type: "warning",
+      title: t.mapPoints.sargassoSea.title,
+      description: t.mapPoints.sargassoSea.description,
+      temperature: 24.5, pollutionLevel: 58, species: 110, trend: "up",
+    },
+    {
+      id: "coral-triangle",
+      x: 78, y: 60,
+      type: "warning",
+      title: t.mapPoints.coralTriangle.title,
+      description: t.mapPoints.coralTriangle.description,
+      temperature: 29.1, pollutionLevel: 45, species: 3000, trend: "down",
+    },
+    {
+      id: "cabo-pulmo",
+      x: 12, y: 42,
+      type: "success",
+      title: t.mapPoints.caboPulmo.title,
+      description: t.mapPoints.caboPulmo.description,
+      temperature: 25.8, pollutionLevel: 3, species: 800, trend: "up",
+    },
+    {
+      id: "southern-ocean",
+      x: 50, y: 92,
+      type: "critical",
+      title: t.mapPoints.southernOcean.title,
+      description: t.mapPoints.southernOcean.description,
+      temperature: -1.5, pollutionLevel: 7, species: 20, trend: "up",
+    },
+    {
+      id: "chagos-success",
+      x: 64, y: 68,
+      type: "success",
+      title: t.mapPoints.chagosSuccess.title,
+      description: t.mapPoints.chagosSuccess.description,
+      temperature: 28.3, pollutionLevel: 2, species: 1150, trend: "stable",
+    }
   ];
 
   const [selectedPoint, setSelectedPoint] = useState<MapPoint | null>(null);
@@ -192,17 +177,24 @@ export function MapPage() {
 
   return (
     <div className={`min-h-screen pt-16 relative overflow-hidden transition-colors duration-700 ${theme === "dark" ? "bg-[#020617]" : "bg-slate-200"}`}>
-      
+
       {/* ÁREA DE NAVEGACIÓN */}
-      <div className="h-[calc(100vh-4rem)] w-full relative overflow-hidden cursor-grab active:cursor-grabbing">
+      <div 
+        ref={containerRef}
+        className="h-[calc(100vh-4rem)] w-full relative overflow-hidden flex items-center justify-center cursor-grab active:cursor-grabbing"
+      >
         <motion.div
-          className="relative w-full h-full"
+          className="relative flex-none"
           drag
-          dragConstraints={dragConstraints}
+          dragConstraints={containerRef}
           dragElastic={0.1}
           animate={controls}
           initial={{ scale: 1, x: 0, y: 0 }}
           transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          style={{
+            width: "max(100%, calc((100vh - 4rem) * 1.777))",
+            height: "max(100%, calc(100vw / 1.777))",
+          }}
         >
           {/* MAPA */}
           <img
@@ -210,7 +202,6 @@ export function MapPage() {
             src={theme === "dark" ? mapDark : mapLight}
             alt="Global Heatmap"
             className="w-full h-full object-cover select-none pointer-events-none"
-            style={{ minWidth: '100%', minHeight: '100%' }}
             draggable={false}
           />
 
@@ -229,9 +220,9 @@ export function MapPage() {
                   title={`${aria.pointInfo}: ${point.title}`}
                   aria-label={`${aria.pointInfo}: ${point.title}`}
                 >
-                  <div 
+                  <div
                     className="absolute inset-0 animate-ping opacity-30"
-                    style={{ 
+                    style={{
                       backgroundColor: getPointColor(point.type),
                       borderRadius: point.type === "success" ? "100%" : "0%",
                       clipPath: point.type === "warning" ? "polygon(50% 0%, 0% 100%, 100% 100%)" : "none"
@@ -298,39 +289,36 @@ export function MapPage() {
 
       {/* CONTROLES */}
       <div className="absolute bottom-10 right-10 flex flex-col gap-3 z-30">
-        <button 
-          onClick={handleZoomIn} 
+        <button
+          onClick={handleZoomIn}
           title="Zoom In"
           aria-label="Zoom In"
-          className={`p-4 rounded-2xl border transition-all shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl hover:scale-105 ${
-            theme === "dark" 
-              ? "bg-[#0a192f]/90 border-white/20 text-white hover:bg-white/10" 
+          className={`p-4 rounded-2xl border transition-all shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl hover:scale-105 ${theme === "dark"
+              ? "bg-[#0a192f]/90 border-white/20 text-white hover:bg-white/10"
               : "bg-white/95 border-black/10 text-[var(--ocean-blue-accent)] hover:bg-blue-50"
-          }`}
+            }`}
         >
           <ZoomIn className="w-6 h-6" />
         </button>
-        <button 
-          onClick={handleZoomReset} 
+        <button
+          onClick={handleZoomReset}
           title="Reset Zoom"
           aria-label="Reset Zoom"
-          className={`p-4 rounded-2xl border transition-all shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl hover:scale-105 ${
-            theme === "dark" 
-              ? "bg-[#0a192f]/90 border-white/20 text-white hover:bg-white/10" 
+          className={`p-4 rounded-2xl border transition-all shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl hover:scale-105 ${theme === "dark"
+              ? "bg-[#0a192f]/90 border-white/20 text-white hover:bg-white/10"
               : "bg-white/95 border-black/10 text-[var(--ocean-blue-accent)] hover:bg-blue-50"
-          }`}
+            }`}
         >
           <RefreshCcw className="w-6 h-6" />
         </button>
-        <button 
-          onClick={handleZoomOut} 
+        <button
+          onClick={handleZoomOut}
           title="Zoom Out"
           aria-label="Zoom Out"
-          className={`p-4 rounded-2xl border transition-all shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl hover:scale-105 ${
-            theme === "dark" 
-              ? "bg-[#0a192f]/90 border-white/20 text-white hover:bg-white/10" 
+          className={`p-4 rounded-2xl border transition-all shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl hover:scale-105 ${theme === "dark"
+              ? "bg-[#0a192f]/90 border-white/20 text-white hover:bg-white/10"
               : "bg-white/95 border-black/10 text-[var(--ocean-blue-accent)] hover:bg-blue-50"
-          }`}
+            }`}
         >
           <ZoomOut className="w-6 h-6" />
         </button>
@@ -345,8 +333,8 @@ export function MapPage() {
                 <X className={`w-5 h-5 ${theme === "dark" ? "text-white" : "text-slate-900"}`} />
               </button>
               <div className="flex items-center gap-3 mb-4">
-                 <div className="w-2 h-2 rounded-full" style={{ backgroundColor: getPointColor(selectedPoint.type), boxShadow: `0 0 10px ${getPointColor(selectedPoint.type)}` }} />
-                 <span className={`text-[10px] font-black tracking-[0.2em] uppercase ${theme === "dark" ? "text-cyan-400" : "text-blue-600"}`}>{t.realTimeData}</span>
+                <div className="w-2 h-2 rounded-full" style={{ backgroundColor: getPointColor(selectedPoint.type), boxShadow: `0 0 10px ${getPointColor(selectedPoint.type)}` }} />
+                <span className={`text-[10px] font-black tracking-[0.2em] uppercase ${theme === "dark" ? "text-cyan-400" : "text-blue-600"}`}>{t.realTimeData}</span>
               </div>
               <h4 className={`font-bold text-xl mb-2 ${theme === "dark" ? "text-white" : "text-slate-900"}`}>{selectedPoint.title}</h4>
               <p className={`text-xs leading-relaxed mb-6 ${theme === "dark" ? "text-blue-100/60" : "text-slate-500"}`}>{selectedPoint.description}</p>
