@@ -8,11 +8,8 @@
 @import "./theme.css";
 
 /* Estilos base para que nada se vea "roto" */
-:root,
-body,
-#root {
+:root, body {
   min-height: 100vh;
-  width: 100%;
   margin: 0;
   padding: 0;
   background-color: var(--background);
@@ -20,6 +17,8 @@ body,
   overflow-x: hidden;
 }
 
-body {
-  overflow-y: auto;
+#root {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
