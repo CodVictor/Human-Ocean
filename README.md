@@ -5,8 +5,8 @@
 ## 👥 Nuestro Equipo: UXplorers Grupo 6
 
 - Raúl Tejada Merinero
-- [Nombre del integrante 2]
-- [Nombre del integrante 3]
+- Daniel Hernanz Corral
+- Marcos Hernandez Martín
 - [Nombre del integrante 4]
 - [Nombre del integrante 5]
 - [Nombre del integrante 6]
