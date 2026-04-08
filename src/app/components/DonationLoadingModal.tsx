@@ -98,15 +98,14 @@ export function DonationLoadingModal({ isOpen, onComplete }: DonationLoadingModa
                 {/* Track: Dark greyish blue */}
                 <div className="h-4 w-full bg-slate-800/80 rounded-full overflow-hidden shadow-inner border border-white/5">
                   {/* Indicator: Bright blue */}
-                  <motion.div
-                    className="h-full bg-[var(--ocean-blue-accent)] rounded-full relative"
+                  <div
+                    className="h-full bg-[var(--ocean-blue-accent)] rounded-full relative transition-all duration-75 ease-linear"
                     style={{ width: `${progress}%` }}
-                    layout
                   >
                     {/* Inner highlight for a polished "eco-tech" look */}
                     <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent" />
                     <div className="absolute top-0 left-0 right-0 h-1 bg-white/20 rounded-full" />
-                  </motion.div>
+                  </div>
                 </div>
               </div>
             </div>
