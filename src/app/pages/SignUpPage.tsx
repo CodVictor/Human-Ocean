@@ -3,6 +3,7 @@ import { Link } from 'react-router';
 import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 import { Mail, Lock, User, ArrowRight, Anchor } from 'lucide-react';
+import registerBg from '../assets/mishi-signup.jpg';
 
 export function SignupPage() {
     const { t, language } = useAppContext();
@@ -116,12 +117,16 @@ export function SignupPage() {
     };
 
     return (
-        <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 pt-16 p-4">
+        <div 
+            className="min-h-screen flex items-center justify-center pt-16 p-4 bg-cover bg-center bg-no-repeat relative"
+            style={{ backgroundImage: `url(${registerBg})` }}
+        >
+            <div className="absolute inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-[2px]"></div>
             <motion.div
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4 }}
-                className="w-full max-w-4xl bg-white dark:bg-slate-900 rounded-3xl shadow-xl overflow-hidden border border-slate-100 dark:border-slate-800 flex flex-col md:flex-row h-auto md:h-[520px]"
+                className="w-full max-w-4xl bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-3xl shadow-2xl overflow-hidden border border-white/20 dark:border-slate-700/50 flex flex-col md:flex-row h-auto md:h-[520px] relative z-10"
             >
                 {/* Left Column: Info/Mission */}
                 <div className="w-full md:w-5/12 bg-blue-700 dark:bg-blue-900 text-white p-8 md:p-10 flex flex-col justify-between relative overflow-hidden">
@@ -147,7 +152,7 @@ export function SignupPage() {
                 </div>
 
                 {/* Right Column: Form */}
-                <div className="w-full md:w-7/12 p-8 md:p-10 flex flex-col justify-center bg-white dark:bg-slate-900">
+                <div className="w-full md:w-7/12 p-8 md:p-10 flex flex-col justify-center bg-transparent">
                     <div className="mb-6">
                         <h1 className="text-2xl font-bold text-slate-900 dark:text-white mb-1 tracking-tight">
                             {t('signup.title')}

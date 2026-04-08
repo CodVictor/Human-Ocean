@@ -56,6 +56,22 @@ export function MapPage() {
     controls.start({ scale: 1, x: 0, y: 0 });
   };
 
+  const handleWheel = (e: React.WheelEvent<HTMLDivElement>) => {
+    setZoom((prevZoom) => {
+      let newZoom = prevZoom;
+      if (e.deltaY < 0) {
+        newZoom = Math.min(prevZoom + 0.15, 3);
+      } else if (e.deltaY > 0) {
+        newZoom = Math.max(prevZoom - 0.15, 1);
+      }
+      // Sólo llamamos a controls.start si hubo un cambio real
+      if (newZoom !== prevZoom) {
+        controls.start({ scale: newZoom });
+      }
+      return newZoom;
+    });
+  };
+
   const mapPoints: MapPoint[] = [
     {
       id: "pacific-garbage",
@@ -179,14 +195,15 @@ export function MapPage() {
     <div className={`min-h-screen pt-16 relative overflow-hidden transition-colors duration-700 ${theme === "dark" ? "bg-[#020617]" : "bg-slate-200"}`}>
 
       {/* ÁREA DE NAVEGACIÓN */}
-      <div 
+      <div
         ref={containerRef}
+        onWheel={handleWheel}
         className="h-[calc(100vh-4rem)] w-full relative overflow-hidden flex items-center justify-center cursor-grab active:cursor-grabbing"
       >
         <motion.div
           className="relative flex-none"
           drag
-          dragConstraints={containerRef}
+          dragConstraints={zoom === 1 ? containerRef : { top: -3000, bottom: 3000, left: -3000, right: 3000 }}
           dragElastic={0.1}
           animate={controls}
           initial={{ scale: 1, x: 0, y: 0 }}
@@ -201,7 +218,7 @@ export function MapPage() {
             key={theme}
             src={theme === "dark" ? mapDark : mapLight}
             alt="Global Heatmap"
-            className="w-full h-full object-cover select-none pointer-events-none"
+            className="w-full h-full object-cover select-none"
             draggable={false}
           />
 
@@ -294,8 +311,8 @@ export function MapPage() {
           title="Zoom In"
           aria-label="Zoom In"
           className={`p-4 rounded-2xl border transition-all shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl hover:scale-105 ${theme === "dark"
-              ? "bg-[#0a192f]/90 border-white/20 text-white hover:bg-white/10"
-              : "bg-white/95 border-black/10 text-[var(--ocean-blue-accent)] hover:bg-blue-50"
+            ? "bg-[#0a192f]/90 border-white/20 text-white hover:bg-white/10"
+            : "bg-white/95 border-black/10 text-[var(--ocean-blue-accent)] hover:bg-blue-50"
             }`}
         >
           <ZoomIn className="w-6 h-6" />
@@ -305,8 +322,8 @@ export function MapPage() {
           title="Reset Zoom"
           aria-label="Reset Zoom"
           className={`p-4 rounded-2xl border transition-all shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl hover:scale-105 ${theme === "dark"
-              ? "bg-[#0a192f]/90 border-white/20 text-white hover:bg-white/10"
-              : "bg-white/95 border-black/10 text-[var(--ocean-blue-accent)] hover:bg-blue-50"
+            ? "bg-[#0a192f]/90 border-white/20 text-white hover:bg-white/10"
+            : "bg-white/95 border-black/10 text-[var(--ocean-blue-accent)] hover:bg-blue-50"
             }`}
         >
           <RefreshCcw className="w-6 h-6" />
@@ -316,8 +333,8 @@ export function MapPage() {
           title="Zoom Out"
           aria-label="Zoom Out"
           className={`p-4 rounded-2xl border transition-all shadow-[0_8px_30px_rgba(0,0,0,0.2)] backdrop-blur-xl hover:scale-105 ${theme === "dark"
-              ? "bg-[#0a192f]/90 border-white/20 text-white hover:bg-white/10"
-              : "bg-white/95 border-black/10 text-[var(--ocean-blue-accent)] hover:bg-blue-50"
+            ? "bg-[#0a192f]/90 border-white/20 text-white hover:bg-white/10"
+            : "bg-white/95 border-black/10 text-[var(--ocean-blue-accent)] hover:bg-blue-50"
             }`}
         >
           <ZoomOut className="w-6 h-6" />

@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useMemo } from 'react';
 import { Heart, MessageCircle, Share2, Volume2, VolumeX, ChevronUp, ChevronDown, X, Plus, Music2, Subtitles } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useApp } from '../context/AppContext';
@@ -37,7 +37,7 @@ interface Video {
   commentsList: Comment[];
 }
 
-function SideAction({
+const SideAction = React.memo(function SideAction({
   icon,
   label,
   onClick,
@@ -67,7 +67,7 @@ function SideAction({
       </span>
     </button>
   );
-}
+});
 
 export function FeedPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -86,11 +86,11 @@ export function FeedPage() {
   const t: any = translations[language as keyof typeof translations]?.feed || {};
 
   // Updated videos array with local imports
-  const videos: Video[] = [
+  const videos: Video[] = useMemo(() => [
     {
       id: 'video-1',
       videoUrl: video1,
-      poster: 'https://images.unsplash.com/photo-1621451537084-482c73073a0f',
+      poster: 'https://images.unsplash.com/photo-1621451537084-482c73073a0f?w=600&q=80',
       title: 'Tecnología contra el plástico',
       author: 'OceanCleanup_ES',
       authorAvatar: 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=100',
@@ -109,7 +109,7 @@ export function FeedPage() {
     {
       id: 'video-2',
       videoUrl: video2,
-      poster: 'https://images.unsplash.com/photo-1551244852-d66e6c5fbd13',
+      poster: 'https://images.unsplash.com/photo-1551244852-d66e6c5fbd13?w=600&q=80',
       title: 'Nadando entre basura',
       author: 'MarineGuardians',
       authorAvatar: 'https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=100',
@@ -127,7 +127,7 @@ export function FeedPage() {
     {
       id: 'video-3',
       videoUrl: video3,
-      poster: 'https://images.unsplash.com/photo-1546026423-cc4642628d2b',
+      poster: 'https://images.unsplash.com/photo-1546026423-cc4642628d2b?w=600&q=80',
       title: 'El reverso oscuro',
       author: 'DeepScubaDivers',
       authorAvatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100',
@@ -145,7 +145,7 @@ export function FeedPage() {
     {
       id: 'video-4',
       videoUrl: video4,
-      poster: 'https://images.unsplash.com/photo-1583212292454-1fe6229603b7',
+      poster: 'https://images.unsplash.com/photo-1583212292454-1fe6229603b7?w=600&q=80',
       title: 'El precio del agua',
       author: 'PlasticFreeWorld',
       authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100',
@@ -163,7 +163,7 @@ export function FeedPage() {
     {
       id: 'video-5',
       videoUrl: video5,
-      poster: 'https://images.unsplash.com/photo-1454789548928-9efd52dc4031',
+      poster: 'https://images.unsplash.com/photo-1454789548928-9efd52dc4031?w=600&q=80',
       title: 'Nuestro único hogar',
       author: 'EarthLoversEdit',
       authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100',
@@ -181,7 +181,7 @@ export function FeedPage() {
     {
       id: 'video-6',
       videoUrl: video6,
-      poster: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b',
+      poster: 'https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?w=600&q=80',
       title: 'Un rescate a tiempo',
       author: 'RescueSeaLife',
       authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100',
@@ -199,7 +199,7 @@ export function FeedPage() {
     {
       id: 'video-7',
       videoUrl: video7,
-      poster: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843',
+      poster: 'https://images.unsplash.com/photo-1518495973542-4542c06a5843?w=600&q=80',
       title: 'Caminando sobre deshechos',
       author: 'WildNatureBirds',
       authorAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100',
@@ -214,7 +214,7 @@ export function FeedPage() {
         { name: 'senderista_pro', text: '¿Dónde está grabado esto? Yo mismo voy allí a limpiar este fin de semana.', time: '4d', likes: 1180, avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100' },
       ]
     }
-  ];
+  ], []);
 
   const currentVideo = videos[currentIndex];
   const isLiked = liked[currentVideo.id] || false;

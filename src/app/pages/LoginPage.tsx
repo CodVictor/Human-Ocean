@@ -3,6 +3,7 @@ import { useNavigate, Link } from 'react-router';
 import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
 import { Mail, Lock, ArrowRight } from 'lucide-react';
+import loginBg from '../assets/nemo-login.jpg';
 
 export function LoginPage() {
   const { login, t, language } = useAppContext();
@@ -84,12 +85,16 @@ export function LoginPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 dark:bg-slate-950 pt-16 p-4">
+    <div 
+      className="min-h-screen flex items-center justify-center pt-16 p-4 bg-cover bg-center bg-no-repeat relative"
+      style={{ backgroundImage: `url(${loginBg})` }}
+    >
+      <div className="absolute inset-0 bg-slate-900/40 dark:bg-slate-950/60 backdrop-blur-[2px]"></div>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.4 }}
-        className="w-full max-w-md bg-white dark:bg-slate-900 rounded-2xl shadow-xl overflow-hidden border border-slate-100 dark:border-slate-800"
+        className="w-full max-w-md bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl rounded-2xl shadow-2xl overflow-hidden border border-white/20 dark:border-slate-700/50 relative z-10"
       >
         <div className="p-8 pb-6">
           <div className="mb-6 text-center">
