@@ -1,6 +1,15 @@
-# Human Ocaen - Prototipo ODS 14: Vida Submarina 🌊 🌍
+# Human Ocean - Prototipo ODS 14: Vida Submarina 🌊 🌍
 
 ¡Bienvenido a **Human Ocean**! Este es un proyecto prototipo diseñado para concientizar y promover acciones en torno al **Objetivo de Desarrollo Sostenible (ODS) 14: Vida Submarina**. Nuestra meta es conservar y utilizar de forma sostenible los océanos, los mares y los recursos marinos, fomentando la participación ciudadana a través de herramientas interactivas, mapas, juegos y seguimiento de hábitos sustentables.
+
+## 👥 Nuestro Equipo: UXplorers Grupo 6
+
+- Raúl Tejada Merinero
+- [Nombre del integrante 2]
+- [Nombre del integrante 3]
+- [Nombre del integrante 4]
+- [Nombre del integrante 5]
+- [Nombre del integrante 6]
 
 ---
 
