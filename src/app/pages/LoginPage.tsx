@@ -76,10 +76,10 @@ export function LoginPage() {
             <div className="pt-2">
               <button
                 type="submit"
-                className="group relative w-full flex justify-center py-2.5 px-4 border border-transparent text-sm font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-md shadow-blue-500/20"
+                className="group relative w-full flex items-center justify-center py-2.5 px-4 gap-2 border border-transparent text-sm font-medium rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors shadow-md shadow-blue-500/20"
               >
-                {t('login.submit')}
-                <ArrowRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+                <span>{t('login.submit')}</span>
+                <ArrowRight className="h-4 w-4 mt-[2px] group-hover:translate-x-1 transition-transform" />
               </button>
             </div>
           </form>
