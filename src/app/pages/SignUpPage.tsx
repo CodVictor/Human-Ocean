@@ -1,12 +1,15 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
-import { Mail, Lock, User, ArrowRight, Anchor } from 'lucide-react';
+import { Mail, Lock, User, ArrowRight, Anchor, Eye, EyeOff } from 'lucide-react';
 import registerBg from '../assets/mishi-signup.jpg';
 
 export function SignupPage() {
     const { t, language } = useAppContext();
+    const [showPassword, setShowPassword] = useState(false);
+    const [isSuccess, setIsSuccess] = useState(false);
+    const navigate = useNavigate();
 
     const [formData, setFormData] = useState({
         firstName: '',
@@ -99,6 +102,17 @@ export function SignupPage() {
         setErrors(nextErrors);
 
         if (Object.values(nextErrors).some(Boolean)) return;
+
+        // Save into basic localStorage JSON
+        const usersStr = localStorage.getItem('app_users');
+        const users = usersStr ? JSON.parse(usersStr) : [];
+        users.push(formData);
+        localStorage.setItem('app_users', JSON.stringify(users));
+
+        setIsSuccess(true);
+        setTimeout(() => {
+            navigate('/login');
+        }, 2000);
     };
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -163,6 +177,11 @@ export function SignupPage() {
                     </div>
 
                     <form onSubmit={handleSubmit} className="space-y-4">
+                        {isSuccess && (
+                            <div className="bg-green-100 dark:bg-green-900/30 border border-green-400 dark:border-green-600 text-green-700 dark:text-green-400 px-4 py-3 rounded-xl text-sm justify-center flex items-center">
+                                ¡Registro exitoso! Redirigiendo...
+                            </div>
+                        )}
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-1">
                                 <label className="text-xs font-medium text-slate-700 dark:text-slate-300 ml-1">
@@ -240,15 +259,23 @@ export function SignupPage() {
                                     <Lock className="h-4 w-4 text-slate-400" />
                                 </div>
                                 <input
-                                    type="password"
+                                    type={showPassword ? 'text' : 'password'}
                                     name="password"
                                     required
                                     value={formData.password}
                                     onChange={handleChange}
                                     aria-invalid={!!errors.password}
-                                    className="block w-full pl-9 pr-3 py-2 border border-slate-200 dark:border-slate-700 rounded-xl leading-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-shadow"
+                                    className="block w-full pl-9 pr-10 py-2 border border-slate-200 dark:border-slate-700 rounded-xl leading-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-shadow"
                                     placeholder="••••••••"
                                 />
+                                <button
+                                    type="button"
+                                    onClick={() => setShowPassword(!showPassword)}
+                                    className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 focus:outline-none"
+                                    aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                                >
+                                    {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                                </button>
                             </div>
                             {errors.password && (
                                 <p className="text-xs text-red-600 dark:text-red-400 ml-1">{errors.password}</p>

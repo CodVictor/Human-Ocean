@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router';
 import { useAppContext } from '../context/AppContext';
 import { motion } from 'motion/react';
-import { Mail, Lock, ArrowRight } from 'lucide-react';
+import { Mail, Lock, ArrowRight, Eye, EyeOff } from 'lucide-react';
 import loginBg from '../assets/nemo-login.jpg';
 
 export function LoginPage() {
@@ -10,7 +10,9 @@ export function LoginPage() {
   const navigate = useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [showPassword, setShowPassword] = useState(false);
   const [errors, setErrors] = useState({ email: '', password: '' });
+  const [authError, setAuthError] = useState('');
 
   const validateEmail = (value: string): string => {
     const trimmed = value.trim();
@@ -56,11 +58,13 @@ export function LoginPage() {
   const handleEmailChange = (value: string) => {
     setEmail(value);
     setErrors((prev) => ({ ...prev, email: validateEmail(value) }));
+    setAuthError('');
   };
 
   const handlePasswordChange = (value: string) => {
     setPassword(value);
     setErrors((prev) => ({ ...prev, password: validatePassword(value) }));
+    setAuthError('');
   };
 
   const isFormInvalid =
@@ -80,8 +84,26 @@ export function LoginPage() {
 
     if (nextErrors.email || nextErrors.password) return;
 
-    login();
-    navigate('/');
+    const usersStr = localStorage.getItem('app_users');
+    if (usersStr) {
+      const users = JSON.parse(usersStr);
+      const user = users.find((u: any) => u.email === email && u.password === password);
+      
+      if (user) {
+        login();
+        navigate('/');
+        return;
+      }
+    }
+    
+    // Fake success if user typed "admin@admin.com" (to prevent totally locking them out if they clear storage)
+    if (email === 'admin@admin.com' && password === 'admin123') {
+        login();
+        navigate('/');
+        return;
+    }
+
+    setAuthError('Correo o contraseña incorrectos.');
   };
 
   return (
@@ -107,6 +129,11 @@ export function LoginPage() {
           </div>
 
           <form onSubmit={handleSubmit} className="space-y-4">
+            {authError && (
+              <div className="bg-red-100 dark:bg-red-900/30 border border-red-400 dark:border-red-600 text-red-700 dark:text-red-400 px-4 py-3 rounded-xl text-sm justify-center flex items-center">
+                {authError}
+              </div>
+            )}
             <div className="space-y-1">
               <label className="text-sm font-medium text-slate-700 dark:text-slate-300 ml-1">
                 {t('login.email')}
@@ -139,14 +166,22 @@ export function LoginPage() {
                   <Lock className="h-4 w-4 text-slate-400" />
                 </div>
                 <input
-                  type="password"
+                  type={showPassword ? 'text' : 'password'}
                   required
                   value={password}
                   onChange={(e) => handlePasswordChange(e.target.value)}
                   aria-invalid={!!errors.password}
-                  className="block w-full pl-10 pr-3 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl leading-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-shadow"
+                  className="block w-full pl-10 pr-10 py-2.5 border border-slate-200 dark:border-slate-700 rounded-xl leading-5 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition-shadow"
                   placeholder="••••••••"
                 />
+                <button
+                  type="button"
+                  onClick={() => setShowPassword(!showPassword)}
+                  className="absolute inset-y-0 right-0 pr-3 flex items-center text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 focus:outline-none"
+                  aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
+                >
+                  {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+                </button>
               </div>
               {errors.password && (
                 <p className="text-xs text-red-600 dark:text-red-400 ml-1">{errors.password}</p>

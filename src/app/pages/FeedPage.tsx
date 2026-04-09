@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Heart, MessageCircle, Share2, Volume2, VolumeX, ChevronUp, ChevronDown, X, Plus, Music2, Subtitles } from 'lucide-react';
+import { Heart, MessageCircle, Share2, Volume2, VolumeX, ChevronUp, ChevronDown, X, Plus, Music2, Subtitles, Play } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useApp } from '../context/AppContext';
 import { translations } from '../data/translations';
@@ -12,6 +12,17 @@ import video4 from '../assets/video4.MP4';
 import video5 from '../assets/video5.MP4';
 import video6 from '../assets/video6.MP4';
 import video7 from '../assets/video7.MP4';
+import video8 from '../assets/video8.MP4';
+import video9 from '../assets/video9.MP4';
+import video10 from '../assets/video10.MP4';
+import video11 from '../assets/video11.MP4';
+import video12 from '../assets/video12.MP4';
+import video13 from '../assets/video13.MP4';
+import video14 from '../assets/video14.MP4';
+import video15 from '../assets/video15.MP4';
+import video16 from '../assets/video16.MP4';
+import video17 from '../assets/video17.MP4';
+import video18 from '../assets/video18.MP4';
 
 interface Comment {
   name: string;
@@ -78,9 +89,12 @@ export function FeedPage() {
   const [direction, setDirection] = useState<'up' | 'down'>('down');
   const [showHeartPop, setShowHeartPop] = useState(false);
   const [shareFlash, setShareFlash] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(true);
 
+  const videoRef = useRef<HTMLVideoElement>(null);
   const isLocked = useRef(false);
   const lastTap = useRef(0);
+  const clickTimeout = useRef<NodeJS.Timeout | null>(null);
   const { language } = useApp();
 
   const t: any = translations[language as keyof typeof translations]?.feed || {};
@@ -213,6 +227,193 @@ export function FeedPage() {
         { name: 'bosque_eterno', text: 'Qué indignante ver un animal tan bello rodeado de nuestra asquerosidad.', time: '4d', likes: 2110, avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100' },
         { name: 'senderista_pro', text: '¿Dónde está grabado esto? Yo mismo voy allí a limpiar este fin de semana.', time: '4d', likes: 1180, avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100' },
       ]
+    },
+    {
+      id: 'video-8',
+      videoUrl: video8,
+      poster: 'https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=600&q=80',
+      title: 'Corales en peligro',
+      author: 'ReefWatchers',
+      authorAvatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100',
+      likes: 67200,
+      comments: 1120,
+      shares: 4300,
+      description: 'La barrera de coral se está blanqueando debido al aumento de las temperaturas. Necesitamos acción climática urgente.',
+      audio: 'Sonido Ambiente - Burbujas',
+      caption: 'Protejamos nuestros corales 🪸',
+      commentsList: [
+        { name: 'ocean_fan', text: 'Es muy triste ver esto en tiempo real.', time: '1d', likes: 800, avatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100' },
+      ]
+    },
+    {
+      id: 'video-9',
+      videoUrl: video9,
+      poster: 'https://images.unsplash.com/photo-1572949645841-094f3a9c4c94?w=600&q=80',
+      title: 'Delfines libres',
+      author: 'OceanLife',
+      authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100',
+      likes: 154000,
+      comments: 4500,
+      shares: 12000,
+      description: 'Una manada de delfines nadando libremente en mar abierto, lejos de la contaminación.',
+      audio: 'Música Alegre - Naturaleza',
+      caption: 'Libertad en el océano 🐬',
+      commentsList: [
+        { name: 'nature_lover', text: '¡Qué maravilla verlos en su hábitat natural!', time: '2d', likes: 2100, avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100' },
+      ]
+    },
+    {
+      id: 'video-10',
+      videoUrl: video10,
+      poster: 'https://images.unsplash.com/photo-1618477461853-cf6ed80fbfc9?w=600&q=80',
+      title: 'Limpiando las playas',
+      author: 'EcoWarriors',
+      authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100',
+      likes: 89000,
+      comments: 2300,
+      shares: 5600,
+      description: 'Voluntarios trabajando duro para limpiar nuestras costas de plástico en las primeras horas de la mañana.',
+      audio: 'Sonido Ambiente - Olas y trabajo',
+      caption: 'Cada grano de arena cuenta 🏖️',
+      commentsList: [
+        { name: 'local_hero', text: 'Gracias a todos los que participaron hoy.', time: '5h', likes: 1500, avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100' },
+      ]
+    },
+    {
+      id: 'video-11',
+      videoUrl: video11,
+      poster: 'https://images.unsplash.com/photo-1520286821217-06103135fd69?w=600&q=80',
+      title: 'Misterios abisales',
+      author: 'DeepDive',
+      authorAvatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100',
+      likes: 112000,
+      comments: 3400,
+      shares: 8900,
+      description: 'Criaturas extrañas que habitan en las profundidades del océano, un mundo apenas explorado pero que también necesita protección.',
+      audio: 'Música Misteriosa - Profundidad',
+      caption: 'Belleza en la oscuridad 🐙',
+      commentsList: [
+        { name: 'scifi_fan', text: 'Parecen alienígenas, es increíble lo poco que conocemos nuestro planeta.', time: '12h', likes: 3200, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100' },
+      ]
+    },
+    {
+      id: 'video-12',
+      videoUrl: video12,
+      poster: 'https://images.unsplash.com/photo-1555556275-68ff37895e7b?w=600&q=80',
+      title: 'Rescate de ballena',
+      author: 'WhaleRescue',
+      authorAvatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100',
+      likes: 245000,
+      comments: 8900,
+      shares: 21000,
+      description: 'Equipo de rescate ayudando a una ballena atrapada en redes de pesca abandonadas. Su canto de agradecimiento nos puso los pelos de punta.',
+      audio: 'Sonido Original - Canto de ballena',
+      caption: 'Una segunda oportunidad 🐋',
+      commentsList: [
+        { name: 'animal_rights', text: 'No puedo dejar de llorar. Gracias por salvarla.', time: '1d', likes: 5400, avatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100' },
+      ]
+    },
+    {
+      id: 'video-13',
+      videoUrl: video13,
+      poster: 'https://images.unsplash.com/photo-1620055375427-4c12bb1bed32?w=600&q=80',
+      title: 'Microplásticos',
+      author: 'ScienceNow',
+      authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100',
+      likes: 67000,
+      comments: 1500,
+      shares: 9800,
+      description: 'Lo que no vemos: el agua del océano está llena de microplásticos que los peces ingieren, contaminando la cadena alimenticia.',
+      audio: 'Música Tensa - Documental',
+      caption: 'Peligro invisible 🔍',
+      commentsList: [
+        { name: 'eco_student', text: 'Esto es algo que deberíamos enseñar en todas las escuelas.', time: '3d', likes: 1200, avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100' },
+      ]
+    },
+    {
+      id: 'video-14',
+      videoUrl: video14,
+      poster: 'https://images.unsplash.com/photo-1518012674264-b0d5c8ebcd33?w=600&q=80',
+      title: 'Tortuga bebé',
+      author: 'TurtleHatch',
+      authorAvatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100',
+      likes: 189000,
+      comments: 4100,
+      shares: 11000,
+      description: 'El primer viaje de una tortuga bebé hacia el mar enfentando múltiples desafíos, agravados por la contaminación visual y la basura en las playas.',
+      audio: 'Música Inspiradora - Nacimiento',
+      caption: 'Pequeños pero valientes 🐢',
+      commentsList: [
+        { name: 'sea_breeze', text: '¡Vamos pequeña, tú puedes!', time: '2d', likes: 3100, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100' },
+      ]
+    },
+    {
+      id: 'video-15',
+      videoUrl: video15,
+      poster: 'https://images.unsplash.com/photo-1550993049-7c18c0c16b60?w=600&q=80',
+      title: 'Aves marinas',
+      author: 'BirdWatch',
+      authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100',
+      likes: 54000,
+      comments: 800,
+      shares: 3400,
+      description: 'Las aves marinas también sufren las consecuencias de la basura en la superficie, confundiéndola con sus presas.',
+      audio: 'Sonido Ambiente - Gaviotas',
+      caption: 'Cuidado con lo que tiramos 🦅',
+      commentsList: [
+        { name: 'bird_lover', text: 'Duele mucho ver su hábitat así.', time: '5d', likes: 600, avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100' },
+      ]
+    },
+    {
+      id: 'video-16',
+      videoUrl: video16,
+      poster: 'https://images.unsplash.com/photo-1508670570624-91696df44ca6?w=600&q=80',
+      title: 'Manglares vitales',
+      author: 'MangroveSave',
+      authorAvatar: 'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=100',
+      likes: 72000,
+      comments: 950,
+      shares: 4100,
+      description: 'Los manglares son esenciales para proteger las costas y albergar vida marina. Su preservación es clave.',
+      audio: 'Sonido Relajante - Bosque de manglares',
+      caption: 'Salvar los manglares 🌱',
+      commentsList: [
+        { name: 'green_earth', text: 'Los grandes olvidados del ecosistema marino.', time: '1w', likes: 850, avatar: 'https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100' },
+      ]
+    },
+    {
+      id: 'video-17',
+      videoUrl: video17,
+      poster: 'https://images.unsplash.com/photo-1532073994348-e8cb9a6ceb80?w=600&q=80',
+      title: 'Reducir el consumo',
+      author: 'ZeroWaste',
+      authorAvatar: 'https://images.unsplash.com/photo-1599566150163-29194dcaad36?w=100',
+      likes: 135000,
+      comments: 2100,
+      shares: 18000,
+      description: 'Pequeños cambios diarios pueden reducir enormemente tu huella de plástico. Empieza hoy mismo reduciendo plásticos de un solo uso.',
+      audio: 'Música Motivacional - Upbeat',
+      caption: 'Cambia tus hábitos ♻️',
+      commentsList: [
+        { name: 'sustainable_life', text: 'Llevo 3 años sin bolsas de plástico. Es posible.', time: '2d', likes: 4500, avatar: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100' },
+      ]
+    },
+    {
+      id: 'video-18',
+      videoUrl: video18,
+      poster: 'https://images.unsplash.com/photo-1437622368342-7a3d73a34c8f?w=600&q=80',
+      title: 'El gigante azul',
+      author: 'BluePlanet',
+      authorAvatar: 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100',
+      likes: 298000,
+      comments: 5400,
+      shares: 32000,
+      description: 'Nuestro planeta es mayoritariamente agua. Cuidar de él es cuidar de nosotros mismos y de las futuras generaciones.',
+      audio: 'Música Épica - Cinematic',
+      caption: 'Agua es vida 🌊',
+      commentsList: [
+        { name: 'deep_blue', text: 'Imágenes espectaculares. Necesitamos protegerlo a toda costa.', time: '1d', likes: 7200, avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?w=100' },
+      ]
     }
   ], []);
 
@@ -229,6 +430,7 @@ export function FeedPage() {
     setDirection('down');
     setCurrentIndex((prev) => (prev + 1) % videos.length);
     setShowComments(false);
+    setIsPlaying(true);
     lockScroll();
   };
 
@@ -237,16 +439,33 @@ export function FeedPage() {
     setDirection('up');
     setCurrentIndex((prev) => (prev - 1 + videos.length) % videos.length);
     setShowComments(false);
+    setIsPlaying(true);
     lockScroll();
   };
 
-  const handleDoubleTap = () => {
+  const handleVideoClick = () => {
     const now = Date.now();
     if (now - lastTap.current < 300) {
+      if (clickTimeout.current) {
+        clearTimeout(clickTimeout.current);
+        clickTimeout.current = null;
+      }
       if (!isLiked) {
         setLiked((prev) => ({ ...prev, [currentVideo.id]: true }));
         triggerHeartPop();
       }
+    } else {
+      clickTimeout.current = setTimeout(() => {
+        if (videoRef.current) {
+          if (videoRef.current.paused) {
+            videoRef.current.play();
+            setIsPlaying(true);
+          } else {
+            videoRef.current.pause();
+            setIsPlaying(false);
+          }
+        }
+      }, 300);
     }
     lastTap.current = now;
   };
@@ -282,8 +501,26 @@ export function FeedPage() {
     };
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isLocked.current) return;
-      if (e.key === 'ArrowDown') handleNext();
-      if (e.key === 'ArrowUp') handlePrev();
+      if (e.key === 'ArrowDown') {
+        e.preventDefault();
+        handleNext();
+      }
+      if (e.key === 'ArrowUp') {
+        e.preventDefault();
+        handlePrev();
+      }
+      if (e.key === ' ' || e.code === 'Space') {
+        e.preventDefault();
+        if (videoRef.current) {
+          if (videoRef.current.paused) {
+            videoRef.current.play();
+            setIsPlaying(true);
+          } else {
+            videoRef.current.pause();
+            setIsPlaying(false);
+          }
+        }
+      }
     };
     window.addEventListener('wheel', handleWheel, { passive: true });
     window.addEventListener('keydown', handleKeyDown);
@@ -342,10 +579,11 @@ export function FeedPage() {
               exit={{ y: direction === 'down' ? '-100%' : '100%' }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0 w-full h-full"
-              onClick={handleDoubleTap}
+              onClick={handleVideoClick}
             >
               <div className="relative w-full h-full">
                 <video
+                  ref={videoRef}
                   key={currentVideo.videoUrl}
                   src={currentVideo.videoUrl}
                   poster={currentVideo.poster}
@@ -356,6 +594,22 @@ export function FeedPage() {
                   className="w-full h-full object-cover"
                 />
                 <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/75 pointer-events-none" />
+                
+                <AnimatePresence>
+                  {!isPlaying && (
+                    <motion.div
+                      initial={{ opacity: 0, scale: 0.8 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.8 }}
+                      transition={{ duration: 0.2 }}
+                      className="absolute inset-0 flex items-center justify-center pointer-events-none z-40"
+                    >
+                      <div className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
+                        <Play className="w-10 h-10 text-white fill-white ml-2" />
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
               </div>
 
               {/* Interaction icons and metadata same as original... */}

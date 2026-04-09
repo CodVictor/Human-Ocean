@@ -71,7 +71,7 @@ export const translations = {
         streakDesc: 'Mantén tu racha y compite',
         games: 'Juegos',
         gamesDesc: 'Aprende jugando',
-        foryou: 'Para ti',
+        foryou: 'Videos Para ti',
         foryouDesc: 'Contenido personalizado',
         map: 'Mapa de Impacto',
         mapDesc: 'Visualiza el impacto global'
@@ -191,7 +191,7 @@ export const translations = {
       ]
     },
     map: {
-      globalMonitor: 'Monitor Global',
+      globalMonitor: 'Leyenda del Mapa',
       critical: 'Crítico',
       warning: 'Advertencia',
       protected: 'Protegido',
@@ -369,7 +369,7 @@ export const translations = {
         streakDesc: 'Keep your streak and compete',
         games: 'Games',
         gamesDesc: 'Learn by playing',
-        foryou: 'For you',
+        foryou: 'Videos for you',
         foryouDesc: 'Personalized content',
         map: 'Impact Map',
         mapDesc: 'Visualize global impact'
@@ -489,7 +489,7 @@ export const translations = {
       ]
     },
     map: {
-      globalMonitor: 'Global Monitor',
+      globalMonitor: 'Map Legend',
       critical: 'Critical',
       warning: 'Warning',
       protected: 'Protected',
