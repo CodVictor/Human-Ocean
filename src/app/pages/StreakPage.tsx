@@ -66,7 +66,7 @@ export function StreakPage() {
               initial={{ opacity: 0, x: -20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.1 }}
-              className="bg-blue-50 dark:bg-gradient-to-br dark:from-[#1e3a5f] dark:to-[#0f2942] rounded-2xl p-6 border border-black/5 dark:border-white/10 shadow-xl"
+              className="bg-blue-50 dark:bg-gradient-to-br dark:from-[#1e3a5f] dark:to-[#0f2942] rounded-2xl p-4 sm:p-6 border border-black/5 dark:border-white/10 shadow-xl"
             >
               <div className="flex items-center gap-3 mb-6">
                 <div className="p-3 bg-[var(--ocean-accent-warning)]/20 rounded-xl">
@@ -79,23 +79,23 @@ export function StreakPage() {
               </div>
 
               {/* Week Progress */}
-              <div className="bg-transparent border border-black/10 hover:bg-black/5 dark:bg-black/20 dark:border-transparent dark:hover:bg-black/20 transition-colors rounded-xl p-4 mb-6">
+              <div className="bg-transparent border border-black/10 hover:bg-black/5 dark:bg-black/20 dark:border-transparent dark:hover:bg-black/20 transition-colors rounded-xl p-3 sm:p-4 mb-6">
                 <p className="text-sm text-muted-foreground mb-3">{t.thisWeek}</p>
-                <div className="flex justify-between gap-2">
+                <div className="flex justify-between gap-1 sm:gap-2 overflow-x-auto pb-1 scrollbar-hide">
                   {weekDays.map((day, index) => (
                     <motion.div
                       key={day.day}
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       transition={{ delay: 0.2 + index * 0.05 }}
-                      className="flex flex-col items-center gap-2"
+                      className="flex flex-col items-center gap-1 sm:gap-2 shrink-0"
                     >
-                      <div className={`w-10 h-10 rounded-full flex items-center justify-center ${
+                      <div className={`w-8 h-8 sm:w-10 sm:h-10 rounded-full flex items-center justify-center text-sm sm:text-base ${
                         day.completed
                           ? 'bg-[var(--ocean-accent-success)] text-white'
                           : 'bg-white/10 text-muted-foreground'
                       }`}>
-                        {day.completed ? <Check className="w-5 h-5" /> : day.day}
+                        {day.completed ? <Check className="w-4 h-4 sm:w-5 sm:h-5" /> : day.day}
                       </div>
                       <span className="text-xs text-muted-foreground">{day.day}</span>
                     </motion.div>
@@ -104,14 +104,14 @@ export function StreakPage() {
               </div>
 
               {/* Stats */}
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-transparent border border-black/10 hover:bg-black/5 dark:bg-black/20 dark:border-transparent dark:hover:bg-black/20 transition-colors rounded-xl p-4">
+              <div className="grid grid-cols-2 gap-3 sm:gap-4">
+                <div className="bg-transparent border border-black/10 hover:bg-black/5 dark:bg-black/20 dark:border-transparent dark:hover:bg-black/20 transition-colors rounded-xl p-3 sm:p-4">
                   <p className="text-sm text-muted-foreground mb-1">{t.bestStreak}</p>
-                  <p className="text-2xl font-semibold">52 {t.days}</p>
+                  <p className="text-xl sm:text-2xl font-semibold">52 {t.days}</p>
                 </div>
-                <div className="bg-transparent border border-black/10 hover:bg-black/5 dark:bg-black/20 dark:border-transparent dark:hover:bg-black/20 transition-colors rounded-xl p-4">
+                <div className="bg-transparent border border-black/10 hover:bg-black/5 dark:bg-black/20 dark:border-transparent dark:hover:bg-black/20 transition-colors rounded-xl p-3 sm:p-4">
                   <p className="text-sm text-muted-foreground mb-1">{t.totalDays}</p>
-                  <p className="text-2xl font-semibold">187 {t.days}</p>
+                  <p className="text-xl sm:text-2xl font-semibold">187 {t.days}</p>
                 </div>
               </div>
 
@@ -128,7 +128,7 @@ export function StreakPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-blue-50 dark:bg-gradient-to-br dark:from-[#1e3a5f] dark:to-[#0f2942] rounded-2xl p-6 border border-black/5 dark:border-white/10 shadow-xl"
+              className="bg-blue-50 dark:bg-gradient-to-br dark:from-[#1e3a5f] dark:to-[#0f2942] rounded-2xl p-4 sm:p-6 border border-black/5 dark:border-white/10 shadow-xl"
             >
               <div className="flex items-center justify-between mb-6">
                 <div>
