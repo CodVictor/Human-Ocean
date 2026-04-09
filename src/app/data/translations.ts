@@ -295,6 +295,32 @@ export const translations = {
       donated: 'Has donado',
       message: 'Tu generosidad nos permite seguir limpiando nuestras playas y protegiendo la vida marina. Gracias por ser el cambio que el océano necesita.',
       backToHome: 'Volver al Inicio'
+    },
+    faq: {
+      title: 'Preguntas Frecuentes',
+      button: 'Preguntas Frecuentes',
+      questions: [
+        {
+          q: '¿Qué es Human & Ocean?',
+          a: 'Human & Ocean es una plataforma dedicada a la concienciación y protección de los océanos. Aquí puedes aprender sobre la vida marina, seguir el impacto global en tiempo real y contribuir directamente a causas de conservación.'
+        },
+        {
+          q: '¿Cómo utilizo el Mapa de Impacto?',
+          a: 'El mapa visualiza zonas críticas, áreas protegidas y proyectos activos. Pulsa en cualquier marcador para ver detalles específicos, analizar datos de polución o descubrir cómo se están recuperando esos ecosistemas.'
+        },
+        {
+          q: '¿Para qué sirven las rachas y los puntos?',
+          a: 'Tu racha diaria mide tu compromiso. Al completar actividades como juegos o ver contenido educativo, ganas XP que te permite subir en la liga y desbloquear logros exclusivos que demuestran tu impacto.'
+        },
+        {
+          q: '¿Dónde puedo encontrar contenido educativo?',
+          a: 'En la sección de "Juegos" encontrarás trivias y desafíos, mientras que en "Videos Para ti" dispones de un reel de videos informativos sobre expediciones marinas y consejos de sostenibilidad.'
+        },
+        {
+          q: '¿Es posible realizar donaciones?',
+          a: 'Sí, desde tu perfil puedes acceder a la sección de donaciones. Cada aportación se destina íntegramente a proyectos de limpieza de playas, recuperación de corales y protección de fauna amenazada.'
+        }
+      ]
     }
   },
   en: {
@@ -593,6 +619,32 @@ export const translations = {
       donated: 'You donated',
       message: 'Your generosity allows us to continue cleaning our beaches and protecting marine life. Thank you for being the change the ocean needs.',
       backToHome: 'Back to Home'
+    },
+    faq: {
+      title: 'Frequently Asked Questions',
+      button: 'Frequently Asked Questions',
+      questions: [
+        {
+          q: 'What is Human & Ocean?',
+          a: 'Human & Ocean is a platform dedicated to marine awareness and protection. Here you can learn about marine life, track global impact in real-time, and contribute directly to conservation causes.'
+        },
+        {
+          q: 'How do I use the Impact Map?',
+          a: 'The map visualizes critical zones, protected areas, and active projects. Click on any marker to see specific details, analyze pollution data, or discover how these ecosystems are recovering.'
+        },
+        {
+          q: 'What are streaks and points for?',
+          a: 'Your daily streak measures your commitment. By completing activities like games or watching educational content, you earn XP that allows you to climb the league and unlock exclusive achievements that showcase your impact.'
+        },
+        {
+          q: 'Where can I find educational content?',
+          a: 'In the "Games" section you will find trivia and challenges, while in "Videos for you" you have a reel of informative videos about marine expeditions and sustainability tips.'
+        },
+        {
+          q: 'Is it possible to make donations?',
+          a: 'Yes, from your profile you can access the donations section. Each contribution goes entirely to beach cleanup projects, coral recovery, and protection of threatened wildlife.'
+        }
+      ]
     }
   }
 };

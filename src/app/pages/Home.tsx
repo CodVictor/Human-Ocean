@@ -1,8 +1,10 @@
-import { Flame, Gamepad2, Video, MapPin } from 'lucide-react';
+import { Flame, Gamepad2, Video, MapPin, HelpCircle } from 'lucide-react';
 import { Link, useNavigate } from 'react-router';
 import { motion } from 'motion/react';
+import { useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { translations } from '../data/translations';
+import { FAQPopup } from '../components/FAQPopup';
 
 import darkMapImage from '../assets/darkmodemap.png';
 import lightMapImage from '../assets/lightmodemap.png';
@@ -10,6 +12,7 @@ import lightMapImage from '../assets/lightmodemap.png';
 export function Home() {
   const navigate = useNavigate();
   const { language, theme } = useApp();
+  const [faqOpen, setFaqOpen] = useState(false);
   const t = translations[language].home;
   const aria = translations[language].aria.home;
 
@@ -155,6 +158,21 @@ export function Home() {
           </div>
         </div>
       </div>
+
+      {/* FAQ Button */}
+      <motion.button
+        initial={{ opacity: 0, scale: 0.8, x: 20 }}
+        animate={{ opacity: 1, scale: 1, x: 0 }}
+        transition={{ delay: 1, duration: 0.5 }}
+        onClick={() => setFaqOpen(true)}
+        className="fixed bottom-6 right-6 z-40 flex items-center gap-2 px-5 py-3 bg-[var(--ocean-blue-accent)] text-white rounded-full shadow-xl hover:scale-105 active:scale-95 transition-all duration-300 font-semibold group border border-white/20"
+        aria-label={translations[language].faq.button}
+      >
+        <HelpCircle className="w-5 h-5 group-hover:rotate-12 transition-transform" />
+        <span className="text-sm sm:text-base">{translations[language].faq.button}</span>
+      </motion.button>
+
+      <FAQPopup open={faqOpen} onOpenChange={setFaqOpen} />
     </div>
   );
 }
