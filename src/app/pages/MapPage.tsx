@@ -16,6 +16,7 @@ import { translations } from "../data/translations";
 // Importación de las imágenes cargadas
 import mapDark from "../assets/darkmodemap.png";
 import mapLight from "../assets/lightmodemap.png";
+import helpVideo from "../assets/yt_ayuda.MP4";
 
 interface MapPoint {
   id: string;
@@ -397,18 +398,16 @@ export function MapPage() {
                 onClick={() => setShowVideoModal(false)}
                 title={aria.closeInfo}
                 aria-label={aria.closeInfo}
-                className={`absolute top-4 right-4 z-10 p-2 rounded-full transition-all ${theme === "dark" ? "bg-white/10 hover:bg-white/20 text-white" : "bg-slate-100 hover:bg-slate-200 text-slate-900"}`}
+                className="absolute top-4 right-4 z-10 p-2 rounded-full transition-all bg-red-500/90 hover:bg-red-600 text-white shadow-lg hover:scale-110 border border-white/20 backdrop-blur-md"
               >
-                <X className="w-6 h-6" />
+                <X className="w-6 h-6 stroke-[3]" />
               </button>
               <div className="relative pt-[56.25%]">
-                <iframe
-                  className="absolute inset-0 w-full h-full"
-                  src="https://www.youtube.com/embed/PXWec3gKoAk"
-                  title="Video explicativo del mapa"
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
+                <video
+                  className="absolute inset-0 w-full h-full object-cover"
+                  src={helpVideo}
+                  controls
+                  title="Vídeo Tutorial del Mapa de Calor: Human&Ocean"
                 />
               </div>
             </motion.div>

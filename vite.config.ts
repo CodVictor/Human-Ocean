@@ -16,6 +16,7 @@ export default defineConfig({
   ],
   build: {
     assetsInlineLimit: 1024,
+    assetsDir: '',
     cssCodeSplit: false,
     rollupOptions: {
       output: {

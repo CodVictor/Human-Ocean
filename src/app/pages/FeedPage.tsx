@@ -1,5 +1,5 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react';
-import { Heart, MessageCircle, Share2, Volume2, VolumeX, ChevronUp, ChevronDown, X, Plus, Music2, Subtitles, Play } from 'lucide-react';
+import React, { useState, useEffect, useRef, useMemo, useCallback } from 'react';
+import { Heart, MessageCircle, Share2, Volume2, VolumeX, ChevronUp, ChevronDown, X, Music2, Subtitles, Play } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { useApp } from '../context/AppContext';
 import { translations } from '../data/translations';
@@ -80,6 +80,102 @@ const SideAction = React.memo(function SideAction({
   );
 });
 
+// Self-contained video player that owns its own ref and handles autoplay/pause correctly
+const VideoItem = React.memo(function VideoItem({
+  src,
+  poster,
+  muted,
+  onTogglePlay,
+  onDoubleTap,
+}: {
+  src: string;
+  poster: string;
+  muted: boolean;
+  onTogglePlay: (playing: boolean) => void;
+  onDoubleTap: () => void;
+}) {
+  const ref = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const lastTap = useRef(0);
+  const clickTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  // Autoplay on mount, pause and clean up on unmount
+  useEffect(() => {
+    const video = ref.current;
+    if (!video) return;
+    const playPromise = video.play();
+    if (playPromise) {
+      playPromise.then(() => setIsPlaying(true)).catch(() => setIsPlaying(false));
+    }
+    return () => {
+      video.pause();
+      video.currentTime = 0;
+    };
+  }, []);
+
+  // Sync muted prop
+  useEffect(() => {
+    if (ref.current) ref.current.muted = muted;
+  }, [muted]);
+
+  const handleClick = useCallback(() => {
+    const now = Date.now();
+    if (now - lastTap.current < 300) {
+      // Double tap
+      if (clickTimeout.current) {
+        clearTimeout(clickTimeout.current);
+        clickTimeout.current = null;
+      }
+      onDoubleTap();
+    } else {
+      clickTimeout.current = setTimeout(() => {
+        const video = ref.current;
+        if (!video) return;
+        if (video.paused) {
+          video.play().then(() => { setIsPlaying(true); onTogglePlay(true); }).catch(() => {});
+        } else {
+          video.pause();
+          setIsPlaying(false);
+          onTogglePlay(false);
+        }
+      }, 300);
+    }
+    lastTap.current = now;
+  }, [onDoubleTap, onTogglePlay]);
+
+  return (
+    <div className="relative w-full h-full" onClick={handleClick}>
+      <video
+        ref={ref}
+        src={src}
+        poster={poster}
+        loop
+        muted={muted}
+        playsInline
+        className="w-full h-full object-cover"
+        onPlay={() => setIsPlaying(true)}
+        onPause={() => setIsPlaying(false)}
+      />
+      <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/75 pointer-events-none" />
+      <AnimatePresence>
+        {!isPlaying && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.8 }}
+            transition={{ duration: 0.2 }}
+            className="absolute inset-0 flex items-center justify-center pointer-events-none z-40"
+          >
+            <div className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
+              <Play className="w-10 h-10 text-white fill-white ml-2" />
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </div>
+  );
+});
+
 export function FeedPage() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [liked, setLiked] = useState<Record<string, boolean>>({});
@@ -89,12 +185,8 @@ export function FeedPage() {
   const [direction, setDirection] = useState<'up' | 'down'>('down');
   const [showHeartPop, setShowHeartPop] = useState(false);
   const [shareFlash, setShareFlash] = useState(false);
-  const [isPlaying, setIsPlaying] = useState(true);
 
-  const videoRef = useRef<HTMLVideoElement>(null);
   const isLocked = useRef(false);
-  const lastTap = useRef(0);
-  const clickTimeout = useRef<NodeJS.Timeout | null>(null);
   const { language } = useApp();
 
   const t: any = translations[language as keyof typeof translations]?.feed || {};
@@ -430,7 +522,6 @@ export function FeedPage() {
     setDirection('down');
     setCurrentIndex((prev) => (prev + 1) % videos.length);
     setShowComments(false);
-    setIsPlaying(true);
     lockScroll();
   };
 
@@ -439,35 +530,7 @@ export function FeedPage() {
     setDirection('up');
     setCurrentIndex((prev) => (prev - 1 + videos.length) % videos.length);
     setShowComments(false);
-    setIsPlaying(true);
     lockScroll();
-  };
-
-  const handleVideoClick = () => {
-    const now = Date.now();
-    if (now - lastTap.current < 300) {
-      if (clickTimeout.current) {
-        clearTimeout(clickTimeout.current);
-        clickTimeout.current = null;
-      }
-      if (!isLiked) {
-        setLiked((prev) => ({ ...prev, [currentVideo.id]: true }));
-        triggerHeartPop();
-      }
-    } else {
-      clickTimeout.current = setTimeout(() => {
-        if (videoRef.current) {
-          if (videoRef.current.paused) {
-            videoRef.current.play();
-            setIsPlaying(true);
-          } else {
-            videoRef.current.pause();
-            setIsPlaying(false);
-          }
-        }
-      }, 300);
-    }
-    lastTap.current = now;
   };
 
   const triggerHeartPop = () => {
@@ -501,26 +564,8 @@ export function FeedPage() {
     };
     const handleKeyDown = (e: KeyboardEvent) => {
       if (isLocked.current) return;
-      if (e.key === 'ArrowDown') {
-        e.preventDefault();
-        handleNext();
-      }
-      if (e.key === 'ArrowUp') {
-        e.preventDefault();
-        handlePrev();
-      }
-      if (e.key === ' ' || e.code === 'Space') {
-        e.preventDefault();
-        if (videoRef.current) {
-          if (videoRef.current.paused) {
-            videoRef.current.play();
-            setIsPlaying(true);
-          } else {
-            videoRef.current.pause();
-            setIsPlaying(false);
-          }
-        }
-      }
+      if (e.key === 'ArrowDown') { e.preventDefault(); handleNext(); }
+      if (e.key === 'ArrowUp') { e.preventDefault(); handlePrev(); }
     };
     window.addEventListener('wheel', handleWheel, { passive: true });
     window.addEventListener('keydown', handleKeyDown);
@@ -579,40 +624,20 @@ export function FeedPage() {
               exit={{ y: direction === 'down' ? '-100%' : '100%' }}
               transition={{ duration: 0.45, ease: [0.22, 1, 0.36, 1] }}
               className="absolute inset-0 w-full h-full"
-              onClick={handleVideoClick}
             >
-              <div className="relative w-full h-full">
-                <video
-                  ref={videoRef}
-                  key={currentVideo.videoUrl}
-                  src={currentVideo.videoUrl}
-                  poster={currentVideo.poster}
-                  autoPlay
-                  loop
-                  muted={!volumeEnabled}
-                  playsInline
-                  className="w-full h-full object-cover"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-transparent to-black/75 pointer-events-none" />
-                
-                <AnimatePresence>
-                  {!isPlaying && (
-                    <motion.div
-                      initial={{ opacity: 0, scale: 0.8 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.8 }}
-                      transition={{ duration: 0.2 }}
-                      className="absolute inset-0 flex items-center justify-center pointer-events-none z-40"
-                    >
-                      <div className="w-20 h-20 rounded-full bg-black/40 backdrop-blur-sm flex items-center justify-center">
-                        <Play className="w-10 h-10 text-white fill-white ml-2" />
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
+              <VideoItem
+                src={currentVideo.videoUrl}
+                poster={currentVideo.poster}
+                muted={!volumeEnabled}
+                onTogglePlay={() => {}}
+                onDoubleTap={() => {
+                  if (!isLiked) {
+                    setLiked((prev) => ({ ...prev, [currentVideo.id]: true }));
+                    triggerHeartPop();
+                  }
+                }}
+              />
 
-              {/* Interaction icons and metadata same as original... */}
               <AnimatePresence>
                 {showHeartPop && (
                   <motion.div
@@ -626,6 +651,7 @@ export function FeedPage() {
                   </motion.div>
                 )}
               </AnimatePresence>
+
 
               <div className="absolute bottom-20 left-4 right-20 z-20 pointer-events-none">
                 <div className="flex items-center gap-2 mb-2">

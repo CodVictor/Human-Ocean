@@ -20,6 +20,7 @@ export function GamesPage() {
   const [timeLeft, setTimeLeft] = useState(60);
   const [isFinished, setIsFinished] = useState(false);
   const [isShared, setIsShared] = useState(false);
+  const [answersHistory, setAnswersHistory] = useState<boolean[]>([]);
 
   const handleShare = async () => {
     // Determine title lazily using activeQuiz based on language later, or we can use the localized current one
@@ -246,7 +247,13 @@ export function GamesPage() {
     if (showResult) return;
     setSelectedAnswer(index);
     setShowResult(true);
-    if (index === questions[currentQuestion].correctAnswer) {
+    const isCorrect = index === questions[currentQuestion].correctAnswer;
+    setAnswersHistory(prev => {
+      const newHistory = [...prev];
+      newHistory[currentQuestion] = isCorrect;
+      return newHistory;
+    });
+    if (isCorrect) {
       setScore(score + 1);
       playSound('correct');
     } else {
@@ -273,6 +280,7 @@ export function GamesPage() {
     setScore(0);
     setTimeLeft(20);
     setIsFinished(false);
+    setAnswersHistory([]);
   };
 
   const handleQuizChange = (id: string) => {
@@ -284,6 +292,7 @@ export function GamesPage() {
     setScore(0);
     setTimeLeft(20);
     setIsFinished(false);
+    setAnswersHistory([]);
   };
 
   const getButtonStyle = (index: number) => {
@@ -523,11 +532,23 @@ export function GamesPage() {
                   {questions.map((_, index) => (
                     <div key={index} className="flex items-center gap-3">
                       <div className={`w-6 h-6 rounded-full flex items-center justify-center font-bold text-xs transition-colors ${
-                        isFinished || index < currentQuestion ? 'bg-[var(--ocean-accent-success)] text-white' : index === currentQuestion ? 'bg-[var(--ocean-blue-accent)] text-white ring-2 ring-[var(--ocean-blue-accent)]/20' : 'bg-muted text-muted-foreground border border-border'
+                        index < currentQuestion 
+                          ? (answersHistory[index] ? 'bg-[var(--ocean-accent-success)] text-white' : 'bg-red-500 text-white') 
+                          : showResult && index === currentQuestion
+                            ? (answersHistory[currentQuestion] ? 'bg-[var(--ocean-accent-success)] text-white' : 'bg-red-500 text-white')
+                            : index === currentQuestion 
+                              ? 'bg-[var(--ocean-blue-accent)] text-white ring-2 ring-[var(--ocean-blue-accent)]/20' 
+                              : 'bg-muted text-muted-foreground border border-border'
                       }`}>{index + 1}</div>
                       <div className="flex-1 h-1.5 bg-muted rounded-full overflow-hidden">
                         {(isFinished || index <= currentQuestion) && (
-                          <motion.div initial={{ width: 0 }} animate={{ width: index < currentQuestion ? '100%' : showResult ? '100%' : '50%' }} className={`h-full rounded-full ${index < currentQuestion ? 'bg-[var(--ocean-accent-success)]' : 'bg-[var(--ocean-blue-accent)]'}`}></motion.div>
+                          <motion.div initial={{ width: 0 }} animate={{ width: index < currentQuestion ? '100%' : showResult && index === currentQuestion ? '100%' : '50%' }} className={`h-full rounded-full ${
+                            index < currentQuestion 
+                              ? (answersHistory[index] ? 'bg-[var(--ocean-accent-success)]' : 'bg-red-500') 
+                              : showResult && index === currentQuestion
+                                ? (answersHistory[currentQuestion] ? 'bg-[var(--ocean-accent-success)]' : 'bg-red-500')
+                                : 'bg-[var(--ocean-blue-accent)]'
+                          }`}></motion.div>
                         )}
                       </div>
                     </div>
